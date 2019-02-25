@@ -20,3 +20,9 @@ resource "google_project_iam_binding" "jumper_logWriter" {
 
   members = ["serviceAccount:${google_service_account.jumper_sa.email}"]
 }
+
+resource "google_project_iam_binding" "jumper_container_developer" {
+  role = "roles/container.developer"
+
+  members = ["serviceAccount:${google_service_account.jumper_sa.email}"]
+}
