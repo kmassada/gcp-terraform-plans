@@ -1,12 +1,13 @@
 resource "google_container_cluster" "primary" {
   name               = "gke-pv-cluster-tf"
   initial_node_count = 3
+  project            = "${var.project_id}"
 
   node_config {
     service_account = "${google_service_account.gke_node_sa.email}"
   }
 
-  network = "${module.net.network_name}"
+  network = "${var.network}"
 
   private_cluster_config {
     enable_private_endpoint = true
@@ -20,8 +21,8 @@ resource "google_container_cluster" "primary" {
 
   master_authorized_networks_config {
     cidr_blocks {
-      cidr_block   = "${module.net.subnet_ip_cidr_range}"
-      display_name = "${module.net.subnet_name}"
+      cidr_block   = "${var.subnetwork_ip_cidr_range}"
+      display_name = "${var.subnetwork}"
     }
   }
 
