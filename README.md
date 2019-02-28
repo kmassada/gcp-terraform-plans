@@ -62,3 +62,19 @@ use output of path to credentials in terraform.tfvars
 creds="/home/dude/.config/gcloud/application_default_credentials.json"
 ```
 
+## External
+
+```shell
+gsutil mb -p ${TF_ADMIN} gs://${TF_ADMIN}
+
+cat > backend.tf <<EOF
+terraform {
+ backend "gcs" {
+   bucket  = "${TF_ADMIN}"
+   prefix  = "terraform/state"
+   project = "${TF_ADMIN}"
+ }
+}
+EOF
+```
+
