@@ -1,13 +1,13 @@
 variable "network" {
-  default = "neuron-tf"
+    description =  "Terraform Generated network"
 }
 
 variable "subnetwork" {
-  default = "neuron-subnet-tf"
+    description =  "Terraform Generated subnetwork"
 }
 
 variable "subnetwork_ip_cidr_range" {
-  default = "10.128.0.0/16"
+    description =  "Terraform Generated subnetwork's cidr range"
 }
 
 variable "project_id" {
