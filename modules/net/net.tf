@@ -1,10 +1,12 @@
 resource "google_compute_network" "neuron_tf" {
   name                    = "${var.network}"
+  project                 = "${var.project_id}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "neuron_subnet_tf" {
   name          = "${var.subnetwork}"
+  project       = "${var.project_id}"
   network       = "${google_compute_network.neuron_tf.name}"
   ip_cidr_range = "${var.subnetwork_ip_cidr_range}"
 
