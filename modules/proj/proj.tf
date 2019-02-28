@@ -11,8 +11,8 @@ resource "google_project" "tf_project" {
   billing_account = "${var.billing_account}"
 }
 
-resource "google_project_service" "tf_project" {
+resource "google_project_services" "tf_project" {
   project = "${google_project.tf_project.project_id}"
-  service = "compute.googleapis.com"
+  services = ["compute.googleapis.com", "container.googleapis.com"]
   depends_on = ["google_project.tf_project"]
 }
