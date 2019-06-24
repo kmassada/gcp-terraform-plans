@@ -1,5 +1,5 @@
 resource "google_container_cluster" "primary" {
-  name               = "gke-pv-cluster-tf"
+  name               = "pv-cluster-tf"
   initial_node_count = 3
   project            = "${var.project_id}"
   region             = "${var.region}"
