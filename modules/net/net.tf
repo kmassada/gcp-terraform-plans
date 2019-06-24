@@ -2,6 +2,10 @@ resource "google_compute_network" "neuron_tf" {
   name                    = "${var.network}"
   project                 = "${var.project_id}"
   auto_create_subnetworks = false
+    provisioner "local-exec" {
+    when    = "create"
+    command = "sleep 30"
+  }
 }
 
 resource "google_compute_subnetwork" "neuron_subnet_tf" {
