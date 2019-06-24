@@ -9,7 +9,11 @@ resource "google_project" "tf_project" {
   project_id      = "tf-btstrp-${random_id.project_name.hex}"
   org_id          = "${var.org_id}"
   billing_account = "${var.billing_account}"
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "sleep 90"
   }
+}
 
 resource "google_project_service" "tf_project_compute" {
   project = "${google_project.tf_project.project_id}"
