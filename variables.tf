@@ -1,9 +1,11 @@
 
 variable "region" {
-  default = "us-west1"
+  default = "asia-east1"
 }
 
 variable "region_zone" {
+  default = "asia-east1-a"
+}
 
 variable "min_master_version" {
   default = "1.13"
