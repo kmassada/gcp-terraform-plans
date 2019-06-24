@@ -16,4 +16,8 @@ resource "google_compute_subnetwork" "neuron_subnet_tf" {
   }
 
   private_ip_google_access = true
+
+  depends_on = [
+    "google_compute_subnetwork.neuron_subnet_tf"
+  ]
 }
