@@ -25,6 +25,6 @@ resource "google_project_service" "tf_project_container" {
   service = "container.googleapis.com"
   disable_dependent_services = false
   depends_on   = [
-    "google_project.tf_project"
+    "google_project_service.tf_project_compute"
   ]
 }
