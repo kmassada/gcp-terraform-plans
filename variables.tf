@@ -4,7 +4,9 @@ variable "region" {
 }
 
 variable "region_zone" {
-  default = "us-west1-a"
+
+variable "min_master_version" {
+  default = "1.13"
 }
 
 variable "org_id" {
