@@ -11,7 +11,7 @@ resource "google_project" "tf_project" {
   billing_account = "${var.billing_account}"
   provisioner "local-exec" {
     when    = "destroy"
-    command = "sleep 90"
+    command = "sleep 180"
   }
 }
 
