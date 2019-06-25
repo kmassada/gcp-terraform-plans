@@ -4,7 +4,7 @@ resource "google_compute_network" "neuron_tf" {
   auto_create_subnetworks = false
     provisioner "local-exec" {
     when    = "create"
-    command = "sleep 30"
+    command = "sleep 10"
   }
 }
 
