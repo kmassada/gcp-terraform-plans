@@ -5,6 +5,9 @@ resource "google_container_cluster" "primary" {
   region             = "${var.region}"
   node_config {
     service_account = "${google_service_account.gke_node_sa.email}"
+    metadata {
+      disable-legacy-endpoints = true
+  }
   }
 
   min_master_version = "${var.min_master_version}"
