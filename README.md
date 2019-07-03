@@ -89,3 +89,13 @@ provider "google" {
 ```
 
 Run `terraform init`, then `terraform apply`
+
+## Output
+
+once the output is set
+
+```shell
+gcloud container clusters get-credentials $(terraform output cluster_name) \
+  --region $(terraform output cluster_region) \
+  --project $(terraform output project_id)
+```
