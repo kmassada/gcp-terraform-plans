@@ -9,6 +9,9 @@ resource "google_compute_instance" "jumper_tf" {
   }
 
   network_interface {
+    access_config {
+      nat_ip = ""
+    }
     subnetwork = "${var.subnetwork}"
     subnetwork_project = "${var.project_id}"
   }

@@ -25,3 +25,16 @@ resource "google_compute_subnetwork" "neuron_subnet_tf" {
     "google_compute_subnetwork.neuron_subnet_tf"
   ]
 }
+
+resource "google_compute_firewall" "neuron_tf_allow_ssh" {
+  name    = "neuron-tf-allow-ssh"
+  network = "${google_compute_network.neuron_tf.name}"
+  project = "${var.project_id}"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = "${var.network_allow_ssh_source_ranges}"
+}

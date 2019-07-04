@@ -9,3 +9,11 @@ output "cluster_region" {
 output "project_id" {
   value = "${module.proj.project_id}"
 }
+
+output "jumper_name" {
+  value = "${module.jumper.jumper_name}"
+}
+
+output "jumper_zone" {
+  value = "${module.jumper.jumper_zone}"
+}
