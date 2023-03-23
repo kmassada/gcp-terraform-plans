@@ -24,7 +24,7 @@ resource "google_project_iam_binding" "jumper_monitoring_viewer" {
     ignore_changes =[members]
   }
   depends_on   = [
-    google_service_account.jumper_sa"
+    google_service_account.jumper_sa
   ]
 }
 
@@ -36,7 +36,7 @@ resource "google_project_iam_binding" "jumper_logWriter" {
     ignore_changes =[members]
   }
   depends_on   = [
-    google_service_account.jumper_sa"
+    google_service_account.jumper_sa
   ]
 }
 
@@ -48,6 +48,6 @@ resource "google_project_iam_binding" "jumper_container_developer" {
     ignore_changes =[members]
   }
   depends_on   = [
-    google_service_account.jumper_sa"
+    google_service_account.jumper_sa
   ]
 }
