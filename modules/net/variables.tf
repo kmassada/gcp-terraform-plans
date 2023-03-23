@@ -21,7 +21,6 @@ variable "project_id" {
 
 variable "network_allow_ssh_source_ranges" {
   default = ["0.0.0.0/0"]
-  type = string
 }
 
 variable "pod_range" {
