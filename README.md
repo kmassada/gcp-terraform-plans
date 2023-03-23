@@ -85,7 +85,6 @@ terraform {
  backend "gcs" {
    bucket  = "${TF_ADMIN}"
    prefix  = "terraform/state"
-   project = "${TF_ADMIN}"
  }
 }
 EOF
@@ -96,7 +95,6 @@ create main.tf with provider config
 ```shell
 cat > main.tf <<EOF
 provider "google" {
-  project = "${TF_ADMIN}"
   region  = "us-west1"
   zone    = "us-west1-a"
 }
