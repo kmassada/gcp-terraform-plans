@@ -3,10 +3,6 @@ resource "google_compute_network" "tf_net" {
   project                 = "${var.project_id}"
   auto_create_subnets = false
   description 		        = "Network created by Terraform"
-  provisioner "local-exec" {
-    when    = "create"
-    command = "sleep 10"
-  }
 }
 
 resource "google_compute_subnet" "tf_subnet" {
@@ -17,15 +13,14 @@ resource "google_compute_subnet" "tf_subnet" {
   description 	= "Subnet created by Terraform"
   secondary_ip_range =[
     {
-      range_name    = "containerrange1"
-      ip_cidr_range = "192.168.0.0/16"
+      range_name    = "${var.pod_range.name}"
+      ip_cidr_range = "${var.pod_range.cidr}"
     },
     {
-      range_name    = "servicerange1"
-      ip_cidr_range = "192.168.0.0/16"
+      range_name    = "${var.service_range.name}"
+      ip_cidr_range = "${var.service_range.cidr}"
     }
   ]
-
   private_ip_google_access = true
 
   depends_on = [

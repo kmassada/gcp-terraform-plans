@@ -1,19 +1,46 @@
 variable "network" {
   default = "tf-net"
+  type = string
 }
 
-variable "subnetwork" {
+variable "subnet" {
   default = "tf-subnet"
+  type = string
 }
 
-variable "subnetwork_ip_cidr_range" {
-  default = "10.128.0.0/16"
+variable "subnet_ip_cidr_range" {
+  description = "CIDR range used for subnet"
+  default = "10.128.0.0/20"
+  type = string
 }
 
 variable "project_id" {
-    description =  "Terraform Generated Project ID"    
+  description =  "Terraform Generated Project ID"
+  type = string
 }
 
 variable "network_allow_ssh_source_ranges" {
   default = ["0.0.0.0/0"]
+  type = string
+}
+
+variable "pod_range" {
+  type = object({
+    name = string
+    cidr = string
+  })
+  default = {
+    range_cidr = "10.8.0.0/14"
+    range_name = "podrange1"
+  }
+}
+variable "service_range" {
+  type = object({
+    name = string
+    cidr = string
+  })
+  default = {
+    range_cidr = "10.12.0.0/20"
+    range_name = "servicerange1"
+  }
 }
