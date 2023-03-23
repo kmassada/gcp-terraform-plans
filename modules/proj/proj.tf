@@ -15,10 +15,6 @@ resource "google_project" "tf_project" {
   project_id      = "tf-btstrp-${random_id.project_name.hex}"
   folder_id          = "${var.folder_id}"
   billing_account = "${var.billing_account}"
-  provisioner "local-exec" {
-    when    = "destroy"
-    command = "sleep 180"
-  }
 }
 
 resource "google_project_service" "tf_project_compute" {
