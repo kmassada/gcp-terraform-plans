@@ -27,7 +27,8 @@ yes | gcloud projects create --name ${USER}-terraform-admin \
 export TF_ADMIN=`gcloud projects list --filter="parent.id=$FOLDER_NUMBER AND name=${USER}-terraform-admin" --format json | jq .[0].projectId | tr -d \"`
 
 
-export TF_VAR_org_id=YOUR_ORG_ID_OR_FOLDER
+export TF_VAR_org_id=YOUR_ORG_ID
+export TF_VAR_folder_id=YOUR_FOLDER_ID
 export TF_VAR_billing_account=YOUR_BILLING_ACCOUNT_ID
 
 

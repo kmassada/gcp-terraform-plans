@@ -7,7 +7,7 @@ resource "random_id" "project_name" {
 resource "google_project" "tf_project" {
   name            = "TF BT ${random_id.project_name.hex}"
   project_id      = "tf-btstrp-${random_id.project_name.hex}"
-  org_id          = "${var.org_id}"
+  folder_id          = "${var.folder_id}"
   billing_account = "${var.billing_account}"
   provisioner "local-exec" {
     when    = "destroy"
