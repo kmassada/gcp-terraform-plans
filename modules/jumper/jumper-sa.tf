@@ -9,7 +9,7 @@ resource "google_project_iam_binding" "jumper_metricWriter" {
   project = "${var.project_id}"
   members = ["serviceAccount:${google_service_account.jumper_sa.email}"]  
   lifecycle {
-    ignore_changes =["members"]
+    ignore_changes =[members]
   }
   depends_on   = [
     "google_service_account.jumper_sa"
