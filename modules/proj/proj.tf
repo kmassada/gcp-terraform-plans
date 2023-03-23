@@ -1,4 +1,10 @@
-provider "random" {}
+terraform {
+  required_providers {
+    random = {
+      source = "hashicorp/random"
+    }
+  }
+}
 
 resource "random_id" "project_name" {
   byte_length = 8
