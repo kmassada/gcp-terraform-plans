@@ -30,8 +30,8 @@ variable "pod_range" {
     cidr = string
   })
   default = {
-    range_cidr = "10.8.0.0/14"
-    range_name = "podrange1"
+    cidr = "10.8.0.0/14"
+    name = "podrange1"
   }
 }
 variable "service_range" {
@@ -40,7 +40,7 @@ variable "service_range" {
     cidr = string
   })
   default = {
-    range_cidr = "10.12.0.0/20"
-    range_name = "servicerange1"
+    cidr = "10.12.0.0/20"
+    name = "servicerange1"
   }
 }
