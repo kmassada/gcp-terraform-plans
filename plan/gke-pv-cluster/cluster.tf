@@ -21,13 +21,13 @@ resource "google_container_cluster" "primary" {
   }
 
   ip_allocation_policy {
-    create_subnetwork = true
+    create_subnet = true
   }
 
   master_authorized_networks_config {
     cidr_blocks {
-      cidr_block   = "${var.subnetwork_ip_cidr_range}"
-      display_name = "${var.subnetwork}"
+      cidr_block   = "${var.subnet_ip_cidr_range}"
+      display_name = "${var.subnet}"
     }
   }
 

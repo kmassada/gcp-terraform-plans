@@ -2,12 +2,12 @@ variable "network" {
     description =  "Terraform Generated network"
 }
 
-variable "subnetwork" {
-    description =  "Terraform Generated subnetwork"
+variable "subnet" {
+    description =  "Terraform Generated subnet"
 }
 
-variable "subnetwork_ip_cidr_range" {
-    description =  "Terraform Generated subnetwork's cidr range"
+variable "subnet_ip_cidr_range" {
+    description =  "Terraform Generated subnet's cidr range"
 }
 
 variable "project_id" {

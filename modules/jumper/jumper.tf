@@ -12,8 +12,8 @@ resource "google_compute_instance" "jumper_tf" {
     access_config {
       nat_ip = ""
     }
-    subnetwork = "${var.subnetwork}"
-    subnetwork_project = "${var.project_id}"
+    subnet = "${var.subnet}"
+    subnet_project = "${var.project_id}"
   }
 
   boot_disk {

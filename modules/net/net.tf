@@ -1,28 +1,35 @@
 resource "google_compute_network" "tf_net" {
   name                    = "${var.network}"
   project                 = "${var.project_id}"
-  auto_create_subnetworks = false
-    provisioner "local-exec" {
+  auto_create_subnets = false
+  description 		        = "Network created by Terraform"
+  provisioner "local-exec" {
     when    = "create"
     command = "sleep 10"
   }
 }
 
-resource "google_compute_subnetwork" "tf_subnet" {
-  name          = "${var.subnetwork}"
+resource "google_compute_subnet" "tf_subnet" {
+  name          = "${var.subnet}"
   project       = "${var.project_id}"
   network       = "${google_compute_network.tf_net.name}"
-  ip_cidr_range = "${var.subnetwork_ip_cidr_range}"
-
-  secondary_ip_range {
-    range_name    = "containerrange1"
-    ip_cidr_range = "192.168.0.0/16"
-  }
+  ip_cidr_range = "${var.subnet_ip_cidr_range}"
+  description 	= "Subnet created by Terraform"
+  secondary_ip_range =[
+    {
+      range_name    = "containerrange1"
+      ip_cidr_range = "192.168.0.0/16"
+    },
+    {
+      range_name    = "servicerange1"
+      ip_cidr_range = "192.168.0.0/16"
+    }
+  ]
 
   private_ip_google_access = true
 
   depends_on = [
-    "google_compute_subnetwork.tf_subnet"
+    "google_compute_subnet.tf_subnet"
   ]
 }
 
