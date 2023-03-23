@@ -1,14 +1,14 @@
 
 variable "region" {
-  default = "asia-east1"
+  default = "us-west1"
 }
 
 variable "region_zone" {
-  default = "asia-east1-a"
+  default = "us-west1-a"
 }
 
 variable "min_master_version" {
-  default = "1.13"
+  default = "1.25"
 }
 
 variable "org_id" {

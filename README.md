@@ -3,51 +3,63 @@
 Export the following variables to your environment for use throughout the tutorial.
 
 ```shell
-gcloud organizations list
-gcloud beta billing accounts list
+# get project and folder info you need
+export PROJECT_ID=`gcloud config get-value project`
+export PROJECT_NUMBER=`gcloud projects describe $PROJECT_ID --format="value(projectNumber)"`
+export FOLDER_NUMBER=`gcloud projects get-ancestors $PROJECT_ID --format json | jq .[1].id | tr -d \"`
 
-export TF_VAR_org_id=YOUR_ORG_ID
-export TF_VAR_billing_account=YOUR_BILLING_ACCOUNT_ID
-export TF_ADMIN=${USER}-terraform-admin
-export TF_CREDS=~/.config/gcloud/${USER}-terraform-admin.json
+# get the organization you need
+gcloud organizations list --filter~'displayName=XXXXXXXXXXXXXX' --format=json | jq .[0]
 
-gcloud projects create ${TF_ADMIN} \
+# get the billing account you need
+gcloud beta billing accounts list  --filter='displayName~XXXXXXXXXXXXX' --format json | jq .[0]
+
+# USE ORG ID
+yes | gcloud projects create --name ${USER}-terraform-admin \
   --organization ${TF_VAR_org_id} \
   --set-as-default
+export TF_ADMIN=`gcloud projects list --filter="parent.id=${TF_VAR_org_id} AND name=${USER}-terraform-admin" --format json | jq .[0].projectId | tr -d \"`
+
+# OR USE FOLDER NUMBER
+yes | gcloud projects create --name ${USER}-terraform-admin \
+  --folder ${FOLDER_NUMBER} \
+  --set-as-default
+export TF_ADMIN=`gcloud projects list --filter="parent.id=$FOLDER_NUMBER AND name=${USER}-terraform-admin" --format json | jq .[0].projectId | tr -d \"`
+
+
+export TF_VAR_org_id=YOUR_ORG_ID_OR_FOLDER
+export TF_VAR_billing_account=YOUR_BILLING_ACCOUNT_ID
+
 
 gcloud beta billing projects link ${TF_ADMIN} \
   --billing-account ${TF_VAR_billing_account}
 
-gcloud services enable cloudresourcemanager.googleapis.com
-gcloud services enable cloudbilling.googleapis.com
-gcloud services enable iam.googleapis.com
+
+gcloud config set project ${TF_ADMIN}
+
+gcloud services enable cloudresourcemanager.googleapis.com && \
+gcloud services enable cloudbilling.googleapis.com && \
+gcloud services enable iam.googleapis.com && \
 gcloud services enable compute.googleapis.com
 ```
 
 ## optional [create sa]
 
 ```shell
-gcloud iam service-accounts create terraform \
-  --display-name "Terraform admin account"
 
-gcloud iam service-accounts keys create ${TF_CREDS} \
-  --iam-account terraform@${TF_ADMIN}.iam.gserviceaccount.com
+export TF_SA=${USER}-terraform-sa
+gcloud iam service-accounts create $TF_SA --display-name "Terraform admin account" \
+&& sleep 5 && \
+export TF_SA_ID=`gcloud iam service-accounts list --format='value(email)' --filter='displayName:Terraform admin account'`
 
-gcloud projects add-iam-policy-binding ${TF_ADMIN} \
-  --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com \
-  --role roles/viewer
+gcloud projects add-iam-policy-binding $TF_ADMIN --member=serviceAccount:${TF_SA_ID} --role=roles/viewer
+gcloud projects add-iam-policy-binding $TF_ADMIN --member=serviceAccount:${TF_SA_ID} --role=roles/storage.admin
 
-gcloud projects add-iam-policy-binding ${TF_ADMIN} \
-  --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com \
-  --role roles/storage.admin
+# For FOLDER NUMBER
+gcloud resource-manager folders add-iam-policy-binding $FOLDER_NUMBER --member serviceAccount:${TF_SA_ID} --role roles/resourcemanager.projectCreator
 
-gcloud organizations add-iam-policy-binding ${TF_VAR_org_id} \
-  --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com \
-  --role roles/resourcemanager.projectCreator
-
-gcloud organizations add-iam-policy-binding ${TF_VAR_org_id} \
-  --member serviceAccount:terraform@${TF_ADMIN}.iam.gserviceaccount.com \
-  --role roles/billing.user
+# For ORG ID
+gcloud organizations add-iam-policy-binding $TF_VAR_org_id --member serviceAccount:${TF_SA_ID} --role roles/resourcemanager.projectCreator
 ```
 
 ## Use existing user
@@ -80,12 +92,22 @@ EOF
 
 create main.tf with provider config
 
-```conf
+```shell
+cat > main.tf <<EOF
 provider "google" {
-  project = "some-project"
+  project = "${TF_ADMIN}"
   region  = "us-west1"
   zone    = "us-west1-a"
 }
+EOF
+```
+
+set variables
+
+```shell
+# IMPORTANT
+export TF_VAR_org_id=YOUR_ORG_ID_OR_FOLDER
+export TF_VAR_billing_account=YOUR_BILLING_ACCOUNT_ID
 ```
 
 Run `terraform init`, then `terraform apply`
