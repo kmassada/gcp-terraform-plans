@@ -1,9 +1,9 @@
 variable "network" {
-  default = "neuron-tf"
+  default = "tf-net"
 }
 
 variable "subnetwork" {
-  default = "neuron-subnet-tf"
+  default = "tf-subnet"
 }
 
 variable "subnetwork_ip_cidr_range" {

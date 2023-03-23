@@ -1,4 +1,4 @@
-resource "google_compute_network" "neuron_tf" {
+resource "google_compute_network" "tf_net" {
   name                    = "${var.network}"
   project                 = "${var.project_id}"
   auto_create_subnetworks = false
@@ -8,10 +8,10 @@ resource "google_compute_network" "neuron_tf" {
   }
 }
 
-resource "google_compute_subnetwork" "neuron_subnet_tf" {
+resource "google_compute_subnetwork" "tf_subnet" {
   name          = "${var.subnetwork}"
   project       = "${var.project_id}"
-  network       = "${google_compute_network.neuron_tf.name}"
+  network       = "${google_compute_network.tf_net.name}"
   ip_cidr_range = "${var.subnetwork_ip_cidr_range}"
 
   secondary_ip_range {
@@ -22,13 +22,13 @@ resource "google_compute_subnetwork" "neuron_subnet_tf" {
   private_ip_google_access = true
 
   depends_on = [
-    "google_compute_subnetwork.neuron_subnet_tf"
+    "google_compute_subnetwork.tf_subnet"
   ]
 }
 
-resource "google_compute_firewall" "neuron_tf_allow_ssh" {
-  name    = "neuron-tf-allow-ssh"
-  network = "${google_compute_network.neuron_tf.name}"
+resource "google_compute_firewall" "tf_net_allow_ssh" {
+  name    = "tf-net-allow-ssh"
+  network = "${google_compute_network.tf_net.name}"
   project = "${var.project_id}"
 
   allow {
