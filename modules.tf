@@ -1,16 +1,16 @@
 module "proj" {
-  source = "modules/proj"
+  source = "./modules/proj"
   org_id          = "${var.org_id}"
   billing_account = "${var.billing_account}"
 }
 
 module "net" {
-  source = "modules/net"
+  source = "./modules/net"
   project_id = "${module.proj.project_id}"
 }
 
 module "jumper" {
-  source = "modules/jumper"
+  source = "./modules/jumper"
   subnetwork = "${module.net.subnetwork}"
   project_id = "${module.proj.project_id}"
 }
