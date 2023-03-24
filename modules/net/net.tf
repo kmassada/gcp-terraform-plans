@@ -5,7 +5,7 @@ resource "google_compute_network" "tf_net" {
   description 		        = "Network created by Terraform"
 }
 
-resource "google_compute_subnet" "tf_subnet" {
+resource "google_compute_subnetwork" "tf_subnet" {
   name          = var.subnet
   project       = var.project_id
   network       = google_compute_network.tf_net.name
