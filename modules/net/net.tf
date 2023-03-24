@@ -1,7 +1,7 @@
 resource "google_compute_network" "tf_net" {
   name                    = var.network
   project                 = var.project_id
-  auto_create_subnets = false
+  auto_create_subnetworks = false
   description 		        = "Network created by Terraform"
 }
 
