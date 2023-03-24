@@ -22,7 +22,3 @@ variable "folder_id" {
 variable "billing_account" {
   description = "The ID of the associated billing account (optional)."
 }
-
-variable "creds" {
-  description = "The Full path to the creds of the serviceaccount."
-}
