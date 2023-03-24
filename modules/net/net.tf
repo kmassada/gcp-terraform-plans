@@ -24,7 +24,7 @@ resource "google_compute_subnetwork" "tf_subnet" {
   private_ip_google_access = true
 
   depends_on = [
-    google_compute_subnet.tf_subnet
+    google_compute_subnetwork.tf_subnet
   ]
 }
 
