@@ -5,20 +5,8 @@ resource "google_service_account" "gke_node_sa" {
 
 }
 
-resource "google_project_iam_binding" "node_metricWriter" {
-  role               = "roles/monitoring.metricWriter"
-  project            = var.project_id
-  members = ["serviceAccount:${google_service_account.gke_node_sa.email}"]
-}
-
-resource "google_project_iam_binding" "node_monitoring_viewer" {
-  role               = "roles/monitoring.viewer"
-  project            = var.project_id
-  members = ["serviceAccount:${google_service_account.gke_node_sa.email}"]
-}
-
-resource "google_project_iam_binding" "node_logWriter" {
-  role               = "roles/logging.logWriter"
+resource "google_project_iam_binding" "node_nodeServiceAccount" {
+  role               = "roles/roles/container.nodeServiceAccount"
   project            = var.project_id
   members = ["serviceAccount:${google_service_account.gke_node_sa.email}"]
 }
