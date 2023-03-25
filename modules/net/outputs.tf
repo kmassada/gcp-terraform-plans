@@ -1,11 +1,11 @@
 output "network" {
-  value = google_compute_network.tf_net.name
+  value = google_compute_network.net_tf.name
 }
 
 output "subnet" {
-  value = google_compute_subnetwork.tf_subnet.name
+  value = google_compute_subnetwork.subnet_tf.name
 }
 
 output "subnet_ip_cidr_range" {
-  value = google_compute_subnetwork.tf_subnet.ip_cidr_range
+  value = google_compute_subnetwork.subnet_tf.ip_cidr_range
 }
