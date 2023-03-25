@@ -6,10 +6,13 @@ Export the following variables to your environment for use throughout the tutori
 # get project and folder info you need
 export PROJECT_ID=`gcloud config get-value project`
 export PROJECT_NUMBER=`gcloud projects describe $PROJECT_ID --format="value(projectNumber)"`
-export FOLDER_NUMBER=`gcloud projects get-ancestors $PROJECT_ID --format json | jq .[1].id | tr -d \"`
+export FOLDER_ID=`gcloud projects get-ancestors $PROJECT_ID --format json | jq .[1].id | tr -d \"`
+
+echo $PROJECT_ID
+echo $PROJECT_NUMBER
 
 # My org name is a domain easy to filter on
-# export DISPLAY_NAME=XXXXXXXXXXXXXX
+export DISPLAY_NAME=XXXXXXXXXXXXXX
 
 # get the organization you need
 export ORG_ID=`gcloud organizations list --filter='displayName~'"$DISPLAY_NAME"'' --format=json | jq .[0].name | tr -d \" | awk -F / '{print $2}'`
@@ -17,30 +20,31 @@ export ORG_ID=`gcloud organizations list --filter='displayName~'"$DISPLAY_NAME"'
 # get the billing account you need
 export BILLING_ACCOUNT=`gcloud beta billing accounts list  --filter='displayName~'"$DISPLAY_NAME"'' --format json | jq .[0].name | tr -d \" | awk -F / '{print $2}'`
 
+echo $ORG_ID
+echo $BILLING_ACCOUNT
+
 # create a terraform folder inside the folder I control
 gcloud resource-manager folders create \
    --display-name="terraform-folder" \
-   --folder=$FOLDER_NUMBER
+   --folder=$FOLDER_ID
 
 # from now on, will use that folder 
-export FOLDER_NUMBER=`gcloud resource-manager folders list  --folder=$FOLDER_NUMBER --filter='displayName~'"terraform-folder"'' --format json | jq .[0].name | tr -d \" | awk -F / '{print $2}'`
+echo $FOLDER_ID
+export FOLDER_ID=`gcloud resource-manager folders list  --folder=$FOLDER_ID --filter='displayName~'"terraform-folder"'' --format json | jq .[0].name | tr -d \" | awk -F / '{print $2}'`
+echo $FOLDER_ID
 
 # USE NEW FOLDER NUMBER, create project
 yes | gcloud projects create --name terraform-admin \
-  --folder ${FOLDER_NUMBER} \
+  --folder $FOLDER_ID \
   --set-as-default
 
-export TF_VAR_admin_project=`gcloud projects list --filter="parent.id=$FOLDER_NUMBER AND name=terraform-admin" --format json | jq .[0].projectId | tr -d \"`
+export ADMIN_PROJECT=`gcloud projects list --filter="parent.id=$FOLDER_ID AND name=terraform-admin" --format json | jq .[0].projectId | tr -d \"`
+echo $ADMIN_PROJECT
 
-gcloud beta billing projects link ${TF_VAR_admin_project} \
-  --billing-account ${BILLING_ACCOUNT}
+gcloud beta billing projects link $ADMIN_PROJECT \
+  --billing-account $BILLING_ACCOUNT
 
-# set TF_VARs
-export TF_VAR_org_id=$ORG_ID
-export TF_VAR_folder_id=$FOLDER_NUMBER
-export TF_VAR_billing_account=$BILLING_ACCOUNT
-
-gcloud config set project ${TF_VAR_admin_project}
+gcloud config set project $ADMIN_PROJECT
 
 # enable services
 gcloud services enable cloudresourcemanager.googleapis.com && \
@@ -51,41 +55,31 @@ gcloud services enable compute.googleapis.com
 
 ## optional [create sa]
 
+INFO: creating a terraform admin account to manage some resources in the future
+
 ```shell
 # Create admin sa
-export TF_VAR_admin_sa=terraform-admin-sa
-gcloud iam service-accounts create $TF_VAR_admin_sa --display-name "Terraform admin account" \
+export admin_sa=terraform-admin-sa
+gcloud iam service-accounts create $ADMIN_SA --display-name "Terraform admin account" \
 && sleep 5 && \
-export TF_VAR_admin_sa_id=`gcloud iam service-accounts list --format='value(email)' --filter='displayName:Terraform admin account'`
+export admin_sa_id=`gcloud iam service-accounts list --format='value(email)' --filter='displayName:Terraform admin account'`
 
-gcloud projects add-iam-policy-binding $TF_VAR_admin_project --member=serviceAccount:${TF_VAR_admin_sa_id} --role=roles/viewer
-gcloud projects add-iam-policy-binding $TF_VAR_admin_project --member=serviceAccount:${TF_VAR_admin_sa_id} --role=roles/storage.admin
+gcloud projects add-iam-policy-binding $ADMIN_PROJECT --member=serviceAccount:$ADMIN_SA_ID --role=roles/viewer
+gcloud projects add-iam-policy-binding $ADMIN_PROJECT --member=serviceAccount:$ADMIN_SA_ID --role=roles/storage.admin
 
 # For FOLDER NUMBER
-gcloud resource-manager folders add-iam-policy-binding $TF_VAR_folder_id --member serviceAccount:${TF_VAR_admin_sa_id} --role roles/resourcemanager.projectCreator
-```
-
-## Use existing user
-
-```shell
-gcloud auth application-default login
-```
-
-use output of path to credentials in terraform.tfvars
-
-```shell
-creds="/home/$USER/.config/gcloud/application_default_credentials.json"
+gcloud resource-manager folders add-iam-policy-binding $FOLDER_ID --member serviceAccount:$ADMIN_SA_ID --role roles/resourcemanager.projectCreator
 ```
 
 ## External
 
 ```shell
-gsutil mb -p ${TF_VAR_admin_project} gs://${TF_VAR_admin_project}
+gsutil mb -p $ADMIN_PROJECT gs://$ADMIN_PROJECT
 
 cat > backend.tf <<EOF
 terraform {
  backend "gcs" {
-   bucket  = "${TF_VAR_admin_project}"
+   bucket  = "$ADMIN_PROJECT"
    prefix  = "terraform/state"
  }
 }
@@ -103,12 +97,21 @@ provider "google" {
 EOF
 ```
 
+## Run Terraform
+
 set variables
 
 ```shell
-# IMPORTANT
-export TF_VAR_org_id=YOUR_ORG_ID_OR_FOLDER
-export TF_VAR_billing_account=YOUR_BILLING_ACCOUNT_ID
+# IMPORTANT SET VARS NEEDED
+
+cat > terraform.tfvars <<EOF
+org_id="$ORG_ID"
+folder_id="$FOLDER_ID"
+billing_account="$BILLING_ACCOUNT"
+admin_project="$ADMIN_PROJECT"
+admin_sa="$ADMIN_SA"
+admin_sa_id="$ADMIN_SA_ID"
+EOF
 ```
 
 Run `terraform init`, then `terraform apply`
