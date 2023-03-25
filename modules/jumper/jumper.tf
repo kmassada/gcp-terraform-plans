@@ -18,9 +18,11 @@ resource "google_compute_instance" "jumper_tf" {
 
   boot_disk {
     initialize_params {
-      size  = 10
-      type  = "pd-standard"
+      size  = 64
+      type  = "pd-ssd"
       image = "debian-cloud/debian-11"
     }
   }
+
+  tags = ["allow-ssh"]
 }

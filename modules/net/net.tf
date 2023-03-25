@@ -38,5 +38,7 @@ resource "google_compute_firewall" "tf_net_allow_ssh" {
     ports    = ["22"]
   }
 
+  source_tags = ["allow-ssh"]
+
   source_ranges = var.network_allow_ssh_source_ranges
 }
