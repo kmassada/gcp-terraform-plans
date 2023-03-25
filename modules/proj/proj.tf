@@ -26,11 +26,24 @@ resource "google_project_service" "tf_project_compute" {
   ]
 }
 
+resource "time_sleep" "wait_for_compute_apis" {
+  depends_on = [
+    google_project_service.tf_project_compute
+  ]
+  create_duration = "30s"
+}
+
 resource "google_project_service" "tf_project_container" {
   project = google_project.tf_project.project_id
   service = "container.googleapis.com"
   disable_dependent_services = false
   depends_on   = [
-    google_project_service.tf_project_compute
+    time_sleep.wait_for_compute_apis
+  ]
+}
+
+resource "time_sleep" "wait_for_container_apis" {
+  depends_on = [
+    google_project_service.tf_project_container
   ]
 }
