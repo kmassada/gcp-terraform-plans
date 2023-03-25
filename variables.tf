@@ -22,3 +22,11 @@ variable "folder_id" {
 variable "billing_account" {
   description = "The ID of the associated billing account (optional)."
 }
+
+variable "admin_project" {
+  description = "Admin Project to manage other Terraform resources."
+}
+
+variable "admin_sa_id" {
+  description = "Admin ServiceAccount to manage other Terraform resources."
+}
