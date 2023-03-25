@@ -1,13 +1,14 @@
 resource "google_container_cluster" "primary" {
   name               = "pv-cluster-tf"
-  initial_node_count = 3
+  initial_node_count = 1
+  
   project            = var.project_id
   region             = var.region
   node_config {
     service_account = google_service_account.gke_node_sa.email
     metadata {
       disable-legacy-endpoints = true
-  }
+    }
   }
 
   min_master_version = var.min_master_version
