@@ -26,11 +26,13 @@ resource "google_project_service" "tf_project_compute" {
   ]
 }
 
-resource "time_sleep" "wait_for_compute_apis" {
-  depends_on = [
-    google_project_service.tf_project_compute
-  ]
-  create_duration = "30s"
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 60"
+  }
+  triggers = {
+    "tf_project_compute" = "${google_project_service.tf_project_compute.id}"
+  }
 }
 
 resource "google_project_service" "tf_project_container" {
@@ -38,13 +40,7 @@ resource "google_project_service" "tf_project_container" {
   service = "container.googleapis.com"
   disable_dependent_services = false
   depends_on   = [
-    time_sleep.wait_for_compute_apis
+    null_resource.delay
   ]
 }
 
-resource "time_sleep" "wait_for_container_apis" {
-  depends_on = [
-    google_project_service.tf_project_container
-  ]
-  create_duration = "30s"
-}
