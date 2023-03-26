@@ -28,7 +28,7 @@ resource "google_project_service" "tf_project_compute" {
 
 resource "null_resource" "delay" {
   provisioner "local-exec" {
-    command = "sleep 60"
+    command = "sleep 600"
   }
   triggers = {
     "tf_project_compute" = "${google_project_service.tf_project_compute.id}"
