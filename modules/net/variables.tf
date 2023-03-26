@@ -1,10 +1,10 @@
 variable "network" {
-  default = "net-tf"
+  default = "tf-net"
   type = string
 }
 
 variable "subnet" {
-  default = "subnet-tf"
+  default = "tf-subnet"
   type = string
 }
 
