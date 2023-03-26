@@ -1,12 +1,12 @@
-module "proj" {
-  source = "./modules/proj"
+module "project" {
+  source = "./modules/project"
   org_id          = var.org_id
   folder_id       = var.folder_id
   billing_account = var.billing_account
 }
 
-module "net" {
-  source = "./modules/net"
+module "network" {
+  source = "./modules/network"
   project_id = module.proj.project_id
 }
 
