@@ -1,6 +1,6 @@
 resource "google_service_account" "tf_instance_sa" {
-  account_id   = "instance-node-sa-tf"
-  display_name = "Instance Node Service Account"
+  account_id   = "tf-${var.instance_name}-sa"
+  display_name = "${var.instance_name} Node Service Account"
   project      = var.project_id
 }
 

@@ -7,7 +7,7 @@ variable "subnet" {
     description =  "Terraform Generated subnet"
 }
 
-variable "name" {
+variable "instance_name" {
     description = "Provide Name of Instance"
     default     = "bastion"
 }

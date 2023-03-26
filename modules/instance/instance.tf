@@ -1,5 +1,5 @@
 resource "google_compute_instance" "tf_instance" {
-  name         = "tf-instance"
+  name         = "tf-${var.instance_name}"
   machine_type = "e2-micro"
   project      = var.project_id
 
