@@ -10,10 +10,10 @@ output "project_id" {
   value = module.proj.project_id
 }
 
-output "jumper_name" {
-  value = module.jumper.jumper_name
+output "tf_instance_name" {
+  value = module.instance.tf_instance_name
 }
 
-output "jumper_zone" {
-  value = module.jumper.jumper_zone
+output "tf_instance_zone" {
+  value = module.instance.tf_instance_zone
 }

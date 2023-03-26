@@ -1,10 +1,10 @@
-resource "google_compute_instance" "jumper_tf" {
-  name         = "jumper-tf"
+resource "google_compute_instance" "tf_instance" {
+  name         = "tf-instance"
   machine_type = "e2-micro"
   project      = var.project_id
 
   service_account {
-    email  = google_service_account.jumper_sa.email
+    email  = google_service_account.tf_instance_sa.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 

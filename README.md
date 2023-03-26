@@ -129,15 +129,15 @@ echo gcloud container clusters get-credentials $(terraform output cluster_name) 
 ssh and run command's output
 
 ```shell
-gcloud compute ssh $(terraform output jumper_name) \
-  --zone $(terraform output jumper_zone) \
+gcloud compute ssh $(terraform output tf_instance_name) \
+  --zone $(terraform output tf_instance_zone) \
   --project $(terraform output project_id)
 ```
 
-inside jumper install kubectl
+inside instance install kubectl
 
 ```console
-jumper-tf:~$ sudo apt-get install kubectl
+tf-instance:~$ sudo apt-get install kubectl
 Reading package lists... Done
 Building dependency tree
 Reading state information... Done
@@ -147,12 +147,12 @@ The following NEW packages will be installed:
 0 upgraded, 1 newly installed, 0 to remove and 5 not upgraded.
 
 
-jumper-tf:~$ gcloud container clusters get-credentials pv-cluster-tf --region asia-east1 --project tf-btstrp-xxxxxxx
+tf-instance:~$ gcloud container clusters get-credentials pv-cluster-tf --region asia-east1 --project tf-btstrp-xxxxxxx
 Fetching cluster endpoint and auth data.
 kubeconfig entry generated for pv-cluster-tf.
 
 
-jumper-tf:~$ kubectl get pods --all-namespaces
+tf-instance:~$ kubectl get pods --all-namespaces
 NAMESPACE     NAME                                                           READY   STATUS    RESTARTS   AGE
 kube-system   event-exporter-v0.2.5-7d99d74cf8-hgc5b                         2/2     Running   0          172m
 kube-system   fluentd-gcp-scaler-55bdf597c-fgnxs                             1/1     Running   0          172m

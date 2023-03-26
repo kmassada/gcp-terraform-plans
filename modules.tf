@@ -10,8 +10,8 @@ module "net" {
   project_id = module.proj.project_id
 }
 
-module "jumper" {
-  source = "./modules/jumper"
+module "instance" {
+  source = "./modules/instance"
   subnet = module.net.subnet
   project_id = module.proj.project_id
 }

@@ -6,3 +6,8 @@ variable "project_id" {
 variable "subnet" {
     description =  "Terraform Generated subnet"
 }
+
+variable "name" {
+    description = "Provide Name of Instance"
+    default     = "bastion"
+}
