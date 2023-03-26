@@ -7,7 +7,7 @@
 # }
 
 output "project_id" {
-  value = module.proj.project_id
+  value = module.project.project_id
 }
 
 output "tf_instance_name" {
