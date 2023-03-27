@@ -16,31 +16,3 @@ resource "google_project" "tf_project" {
   folder_id       = var.folder_id
   billing_account = var.billing_account
 }
-
-resource "google_project_service" "tf_project_compute" {
-  project = google_project.tf_project.project_id
-  service = "compute.googleapis.com"
-  disable_dependent_services = false
-  depends_on   = [
-    google_project.tf_project
-  ]
-}
-
-resource "null_resource" "delay" {
-  provisioner "local-exec" {
-    command = "sleep 60"
-  }
-  triggers = {
-    "tf_project_compute" = "${google_project_service.tf_project_compute.id}"
-  }
-}
-
-resource "google_project_service" "tf_project_container" {
-  project = google_project.tf_project.project_id
-  service = "container.googleapis.com"
-  disable_dependent_services = false
-  depends_on   = [
-    null_resource.delay
-  ]
-}
-

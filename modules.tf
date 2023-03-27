@@ -5,11 +5,35 @@ module "project" {
   billing_account = var.billing_account
 }
 
+module "api_services" {
+  source = "./modules/project-services"
+  project_services = [
+    "compute.googleapis.com",
+    "container.googleapis.com"
+  ]
+  depends_on = [
+    module.project
+  ]
+}
+
 module "network" {
   source = "./modules/network"
   project_id = module.project.project_id
   depends_on = [
-    module.project
+    module.enable_api_services
+  ]
+}
+module "instance_sa" {
+  source = "./modules/iam-roles"
+  service_account_name = "bastion-node"
+  service_account_roles = [
+    "roles/monitoring.metricWriter",
+    "roles/monitoring.viewer",
+    "roles/logging.logWriter",
+    "roles/container.developer"
+  ]
+  depends_on = [
+    module.network
   ]
 }
 
@@ -18,7 +42,8 @@ module "instance" {
   subnet = module.network.subnet
   project_id = module.project.project_id
   depends_on = [
-    module.network
+    module.network,
+    module.instance_sa
   ]
 }
 
