@@ -10,3 +10,7 @@ variable "instance_name" {
     description = "Provide Name of Instance"
     default     = "bastion"
 }
+
+variable "service_account_email" {
+    description = "Email of Service Acccount"
+}

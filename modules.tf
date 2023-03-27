@@ -5,10 +5,10 @@ module "project" {
   billing_account = var.billing_account
 }
 
-module "project_services" {
+module "enable_api_services" {
   source = "./modules/project-services"
   project_id = module.project.project_id
-  project_services = [
+  enable_api_services = [
     "compute.googleapis.com",
     "container.googleapis.com"
   ]
@@ -21,7 +21,7 @@ module "network" {
   source = "./modules/network"
   project_id = module.project.project_id
   depends_on = [
-    module.project_services
+    module.enable_api_services
   ]
 }
 module "instance_sa" {
@@ -43,6 +43,7 @@ module "instance" {
   source = "./modules/instance"
   subnet = module.network.subnet
   project_id = module.project.project_id
+  service_account_email = instance_sa.service_account_email
   depends_on = [
     module.network,
     module.instance_sa
