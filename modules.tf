@@ -75,6 +75,8 @@ module "gke_cluster" {
   subnet_ip_cidr_range       = module.network.subnet_ip_cidr_range
   project_id                 = module.project.project_id
   service_account_email      = module.gke_node_sa.service_account_email
+  pod_range_name             = module.network.pod_range_name
+  service_range_name         = module.network.service_range_name
   depends_on = [
     module.gke_node_sa,
     module.network

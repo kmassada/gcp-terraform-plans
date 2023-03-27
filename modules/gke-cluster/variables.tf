@@ -65,3 +65,16 @@ variable "release_channel" {
     description = "Set the release channel of the cluster"
     default = "RAPID"
 }
+
+variable "pod_range_name" {
+    description = "Name of IPv4 CIDR range of pod IPs"
+}
+
+variable "service_range_name" {
+    description = "Name of IPv4 CIDR range of services IPs"
+}
+
+variable "networking_mode" {
+    description = "Mode of Networking: Options are VPC_NATIVE or ROUTES"
+    default = "VPC_NATIVE"
+}

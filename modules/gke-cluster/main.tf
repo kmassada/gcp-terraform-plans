@@ -30,6 +30,11 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
   network = var.network
   subnetwork = var.subnet
 
+  ip_allocation_policy {
+    cluster_secondary_range_name = var.pod_range_name
+    services_secondary_range_name = var.service_range_name
+  }
+
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint
     enable_private_nodes    = var.enable_private_nodes
@@ -38,6 +43,8 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
       enabled =var.master_global_access_config
     }
   }
+
+  networking_mode = var.networking_mode
 
   datapath_provider = var.dataplane_v2
 
