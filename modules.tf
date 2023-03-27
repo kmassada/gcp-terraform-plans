@@ -18,7 +18,7 @@ module "instance" {
   subnet = module.network.subnet
   project_id = module.project.project_id
   depends_on = [
-    module.project
+    module.network
   ]
 }
 
