@@ -59,7 +59,7 @@ module "gke_node_sa" {
   project_id = module.project.project_id
   service_account_name = "gke-node"
   service_account_roles = [
-    "roles/roles/container.nodeServiceAccount"
+    "roles/container.nodeServiceAccount"
   ]
   depends_on = [
     module.enable_api_services
