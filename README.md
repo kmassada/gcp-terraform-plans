@@ -122,7 +122,7 @@ once the output is set, print command
 
 ```shell
 echo gcloud container clusters get-credentials $(terraform output cluster_name) \
-  --region $(terraform output cluster_region) \
+  --region $(terraform output cluster_location) \
   --project $(terraform output project_id)
 ```
 

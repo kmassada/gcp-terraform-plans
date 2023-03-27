@@ -1,10 +1,10 @@
-# output "cluster_name" {
-#   value = module.gke_pv_cluster.cluster_name
-# }
+output "cluster_name" {
+  value = module.gke_pv_cluster.cluster_name
+}
 
-# output "cluster_region" {
-#   value = module.gke_pv_cluster.cluster_region
-# }
+output "cluster_location" {
+  value = module.gke_pv_cluster.cluster_location
+}
 
 output "project_id" {
   value = module.project.project_id
