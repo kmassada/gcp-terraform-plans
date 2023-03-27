@@ -63,5 +63,5 @@ variable "master_global_access_config" {
 
 variable "release_channel" {
     description = "Set the release channel of the cluster"
-    default = "STABLE"
+    default = "RAPID"
 }

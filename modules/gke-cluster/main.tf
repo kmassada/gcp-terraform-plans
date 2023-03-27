@@ -5,6 +5,7 @@ data "google_container_engine_versions" "fetch_version" {
 }
 
 resource "google_container_cluster" "primary" {
+  provider           = google-beta
   name               = var.cluster_name
   initial_node_count = 1
   project            = var.project_id
@@ -16,7 +17,15 @@ resource "google_container_cluster" "primary" {
   release_channel {
     channel = var.release_channel
   }
-  min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version["${var.release_channel}"]
+
+# TODO: will only work for RAPID/REGULAR
+#
+# "release_channel_latest_version": {
+#   "RAPID": "1.25.7-gke.1000",
+#   "REGULAR": "1.25.6-gke.1000"
+# },
+
+min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version["${var.release_channel}"]
 
   network = var.network
   subnetwork = var.subnet
