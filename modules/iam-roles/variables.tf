@@ -7,3 +7,7 @@ variable "service_account_roles" {
   type        = list(string)
   default     = []
 }
+
+variable "project_id" {
+    description =  "Terraform Generated Project ID"    
+}

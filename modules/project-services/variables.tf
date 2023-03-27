@@ -15,3 +15,7 @@ variable "project_service_config" {
     disable_dependent_services = false
   }
 }
+
+variable "project_id" {
+    description =  "Terraform Generated Project ID"    
+}

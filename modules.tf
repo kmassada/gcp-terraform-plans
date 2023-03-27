@@ -5,8 +5,9 @@ module "project" {
   billing_account = var.billing_account
 }
 
-module "api_services" {
+module "project_services" {
   source = "./modules/project-services"
+  project_id = module.project.project_id
   project_services = [
     "compute.googleapis.com",
     "container.googleapis.com"
@@ -25,6 +26,7 @@ module "network" {
 }
 module "instance_sa" {
   source = "./modules/iam-roles"
+  project_id = module.project.project_id
   service_account_name = "bastion-node"
   service_account_roles = [
     "roles/monitoring.metricWriter",
