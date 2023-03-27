@@ -43,7 +43,7 @@ module "instance" {
   source = "./modules/instance"
   subnet = module.network.subnet
   project_id = module.project.project_id
-  service_account_email = instance_sa.service_account_email
+  service_account_email = module.instance_sa.service_account_email
   depends_on = [
     module.network,
     module.instance_sa
