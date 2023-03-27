@@ -10,10 +10,10 @@ output "project_id" {
   value = module.project.project_id
 }
 
-output "tf_instance_name" {
-  value = module.instance.tf_instance_name
+output "instance_name" {
+  value = module.instance.instance_name
 }
 
-output "tf_instance_zone" {
-  value = module.instance.tf_instance_zone
+output "instance_zone" {
+  value = module.instance.instance_zone
 }

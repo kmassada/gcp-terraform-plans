@@ -1,18 +1,18 @@
-resource "google_service_account" "tf_service_account" {
+resource "google_service_account" "service_account" {
   account_id   = "tf-${var.service_account_name}-sa"
   display_name = "${var.service_account_name} Service Account"
   project      = var.project_id
 }
 
-resource "google_project_iam_binding" "tf_service_account_roles" {
+resource "google_project_iam_binding" "service_account_roles" {
   for_each  = toset(var.service_account_roles)
   project   = var.project_id
   role      = each.value
-  members   = ["serviceAccount:${google_service_account.tf_service_account.email}"]  
+  members   = ["serviceAccount:${google_service_account.service_account.email}"]  
   lifecycle {
     ignore_changes =[members]
   }
   depends_on   = [
-    google_service_account.tf_service_account
+    google_service_account.service_account
   ]
 }

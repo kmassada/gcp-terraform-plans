@@ -129,8 +129,8 @@ echo gcloud container clusters get-credentials $(terraform output cluster_name) 
 ssh and run command's output
 
 ```shell
-gcloud compute ssh $(terraform output tf_instance_name) \
-  --zone $(terraform output tf_instance_zone) \
+gcloud compute ssh $(terraform output instance_name) \
+  --zone $(terraform output instance_zone) \
   --project $(terraform output project_id)
 ```
 
