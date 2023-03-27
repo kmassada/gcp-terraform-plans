@@ -1,9 +1,9 @@
 output "cluster_name" {
-  value = module.gke_pv_cluster.cluster_name
+  value = module.gke_cluster.cluster_name
 }
 
 output "cluster_location" {
-  value = module.gke_pv_cluster.cluster_location
+  value = module.gke_cluster.cluster_location
 }
 
 output "project_id" {
