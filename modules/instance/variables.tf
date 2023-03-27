@@ -1,4 +1,3 @@
-
 variable "project_id" {
     description =  "Terraform Generated Project ID"    
 }
