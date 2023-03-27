@@ -1,4 +1,4 @@
-resource "google_compute_network" "net" {
+resource "google_compute_network" "network" {
   name                    = var.network
   project                 = var.project_id
   auto_create_subnetworks = false
@@ -8,7 +8,7 @@ resource "google_compute_network" "net" {
 resource "google_compute_subnetwork" "subnet" {
   name          = var.subnet
   project       = var.project_id
-  network       = google_compute_network.net.name
+  network       = google_compute_network.network.name
   ip_cidr_range = var.subnet_ip_cidr_range
   description 	= "Subnet created by Terraform"
   secondary_ip_range =[
@@ -30,7 +30,7 @@ resource "google_compute_subnetwork" "subnet" {
 
 resource "google_compute_firewall" "net_allow_ssh" {
   name    = "tf-net-allow-ssh"
-  network = google_compute_network.net.name
+  network = google_compute_network.network.name
   project = var.project_id
 
   allow {
