@@ -8,7 +8,7 @@ module "project" {
 module "enable_api_services" {
   source = "./modules/project-services"
   project_id = module.project.project_id
-  enable_api_services = [
+  api_services = [
     "compute.googleapis.com",
     "container.googleapis.com"
   ]
