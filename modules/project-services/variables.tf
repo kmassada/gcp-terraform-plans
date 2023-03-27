@@ -1,10 +1,10 @@
-variable "services" {
+variable "project_services" {
   description = "Service APIs to enable."
   type        = list(string)
   default     = []
 }
 
-variable "service_config" {
+variable "project_service_config" {
   description = "Configure service API activation."
   type = object({
     disable_on_destroy         = bool
