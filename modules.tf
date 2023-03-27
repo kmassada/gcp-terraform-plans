@@ -21,7 +21,7 @@ module "network" {
   source = "./modules/network"
   project_id = module.project.project_id
   depends_on = [
-    module.enable_api_services
+    module.project_services
   ]
 }
 module "instance_sa" {
