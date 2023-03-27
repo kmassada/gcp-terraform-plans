@@ -38,7 +38,7 @@ variable "version_prefix" {
 
 variable "dataplane_v2" {
     description =  "Dataplane v2 enabled?"
-    default = true
+    default = "ADVANCED_DATAPATH"
 }
 
 variable "enable_private_endpoint" {
