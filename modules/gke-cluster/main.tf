@@ -25,7 +25,9 @@ resource "google_container_cluster" "primary" {
     enable_private_endpoint = var.enable_private_endpoint
     enable_private_nodes    = var.enable_private_nodes
     master_ipv4_cidr_block  = var.master_ipv4_cidr_block
-    master_global_access_config = var.master_global_access_config
+    master_global_access_config {
+      enabled =var.master_global_access_config
+    }
   }
 
   datapath_provider = var.dataplane_v2
