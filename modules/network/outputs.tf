@@ -3,9 +3,9 @@ output "network" {
 }
 
 output "subnet" {
-  value = google_compute_subnetwork.subnetwork.name
+  value = google_compute_subnetwork.subnet.name
 }
 
 output "subnet_ip_cidr_range" {
-  value = google_compute_subnetwork.subnetwork.ip_cidr_range
+  value = google_compute_subnetwork.subnet.ip_cidr_range
 }
