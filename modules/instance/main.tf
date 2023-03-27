@@ -4,7 +4,7 @@ resource "google_compute_instance" "tf_instance" {
   project      = var.project_id
 
   service_account {
-    email  = google_service_account.tf_instance_sa.email
+    email  = var.service_account_email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
