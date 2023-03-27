@@ -5,7 +5,7 @@ resource "google_container_cluster" "primary" {
   project            = var.project_id
   location           = var.region
   node_config {
-    service_account = google_service_account.gke_node_sa.email
+    service_account = service_account_email
     metadata {
       disable-legacy-endpoints = true
     }
