@@ -1,3 +1,5 @@
+# Bootstrap Project and Bastion
+
 module "project" {
   source = "./modules/project"
   org_id          = var.org_id
@@ -50,12 +52,31 @@ module "instance" {
   ]
 }
 
-# module "gke_pv_cluster" {
-#   source = "plan/gke-pv-cluster"
-#   network                    = module.network.network
-#   region                     = var.region
-#   min_master_version         = var.min_master_version
-#   subnet                 = module.network.subnet
-#   subnet_ip_cidr_range   = module.network.subnet_ip_cidr_range
-#   project_id                 = module.project.project_id
-# }
+# Create GKE cluster
+
+module "gke_node_sa" {
+  source = "./modules/iam-roles"
+  project_id = module.project.project_id
+  service_account_name = "gke-node"
+  service_account_roles = [
+    "roles/roles/container.nodeServiceAccount"
+  ]
+  depends_on = [
+    module.enable_api_services
+  ]
+}
+
+module "gke_cluster" {
+  source = "./modules/gke-cluster"
+  network                    = module.network.network
+  region                     = var.region
+  min_master_version         = var.min_master_version
+  subnet                     = module.network.subnet
+  subnet_ip_cidr_range       = module.network.subnet_ip_cidr_range
+  project_id                 = module.project.project_id
+  service_account_email      = module.gke_node_sa.service_account_email
+  depends_on = [
+    module.gke_node_sa,
+    module.network
+  ]
+}
