@@ -8,12 +8,18 @@ module "project" {
 module "network" {
   source = "./modules/network"
   project_id = module.project.project_id
+  depends_on = [
+    module.project
+  ]
 }
 
 module "instance" {
   source = "./modules/instance"
   subnet = module.network.subnet
   project_id = module.project.project_id
+  depends_on = [
+    module.project
+  ]
 }
 
 # module "gke_pv_cluster" {
