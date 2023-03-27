@@ -1,53 +1,51 @@
-resource "google_container_cluster" "primary" {
-  name               = "pv-cluster-tf"
-  initial_node_count = 1
+data "google_container_engine_versions" "fetch_version" {
+  provider       = google-beta
+  location       = var.region
+  version_prefix = var.version_prefix
+}
 
+resource "google_container_cluster" "primary" {
+  name               = var.cluster_name
+  initial_node_count = 1
   project            = var.project_id
   location           = var.region
   node_config {
     service_account = var.service_account_email
-    metadata {
-      disable-legacy-endpoints = true
-    }
   }
 
-  min_master_version = var.min_master_version
+  release_channel = var.release_channel
+  min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version[var.release_channel]
 
   network = var.network
+  subnetwork = var.subnet
 
   private_cluster_config {
-    enable_private_endpoint = true
-    enable_private_nodes    = true
-    master_ipv4_cidr_block  = "172.16.0.0/28"
+    enable_private_endpoint = var.enable_private_endpoint
+    enable_private_nodes    = var.enable_private_nodes
+    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
+    master_global_access_config = var.master_global_access_config
   }
 
-  ip_allocation_policy {
-    create_subnet = true
-  }
-
-  master_authorized_networks_config {
-    cidr_blocks {
-      cidr_block   = var.subnet_ip_cidr_range
-      display_name = var.subnet
-    }
-  }
+  datapath_provider = var.dataplane_v2
 
   addons_config {
     http_load_balancing {
       disabled = false
     }
-
     horizontal_pod_autoscaling {
-      disabled = false
-    }
-
-		kubernetes_dashboard {
       disabled = false
     }
   }
 
-	logging_service = "logging.googleapis.com/kubernetes"
-	monitoring_service = "monitoring.googleapis.com/kubernetes"
+  logging_config {
+    enable_components = [
+        "SYSTEM_COMPONENTS", 
+        "WORKLOADS", 
+        "APISERVER", 
+        "CONTROLLER_MANAGER", 
+        "SCHEDULER"
+      ]
+  }
 
   timeouts {
     create = "30m"

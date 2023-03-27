@@ -25,3 +25,43 @@ variable "min_master_version" {
 variable "service_account_email" {
     description =  "Email of the GKE Node Service Account"
 }
+
+variable "cluster_name" {
+    description =  "Name of the GKE Cluster"
+    default = "gke-cluster"
+}
+
+variable "version_prefix" {
+    description =  "Prefix of the GKE Cluster version"
+    default = "1.25"
+}
+
+variable "dataplane_v2" {
+    description =  "Dataplane v2 enabled?"
+    default = true
+}
+
+variable "enable_private_endpoint" {
+    description = "Private endpoint to Kubernetes API Server"
+    default = false
+}
+
+variable "enable_private_nodes" {
+    description = "Private nodes to Kubernetes API Server"
+    default = true
+}
+
+variable "master_ipv4_cidr_block" {
+    description = "Private IPv4 CIDR range of control plane"
+    default = "172.16.0.0/28"
+}
+
+variable "master_global_access_config" {
+    description = "Controls cluster master global access settings"
+    default = true
+}
+
+variable "release_channel" {
+    description = "Set the release channel of the cluster"
+    default = "STABLE"
+}
