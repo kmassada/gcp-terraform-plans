@@ -13,7 +13,9 @@ resource "google_container_cluster" "primary" {
     service_account = var.service_account_email
   }
 
-  release_channel = var.release_channel
+  release_channel {
+    channel = var.release_channel
+  }
   min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version[var.release_channel]
 
   network = var.network
