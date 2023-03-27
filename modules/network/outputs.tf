@@ -14,6 +14,6 @@ output "pod_range_name" {
   value = google_compute_subnetwork.subnet.secondary_ip_range[0].range_name
 }
 
-output "service_ip_range" {
+output "service_range_name" {
   value = google_compute_subnetwork.subnet.secondary_ip_range[1].range_name
 }
