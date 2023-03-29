@@ -9,7 +9,7 @@ resource "google_container_cluster" "primary" {
   name               = var.cluster_name
   initial_node_count = 1
   project            = var.project_id
-  location           = var.region
+  location           = var.location
   node_config {
     service_account = var.service_account_email
   }
