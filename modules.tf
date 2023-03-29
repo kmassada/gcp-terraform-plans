@@ -106,7 +106,7 @@ module "gke_cluster" {
 
 module "gke_network" {
   source = "./modules/network"
-  name = "tf-gke-net"
+  network_name = "tf-gke-net"
   auto_create_subnetworks = true
   project_id = module.project.project_id
   depends_on = [
