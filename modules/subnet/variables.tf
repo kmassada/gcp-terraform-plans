@@ -3,12 +3,12 @@ variable "project_id" {
   type = string
 }
 
-variable "network" {
+variable "network_name" {
   default = "tf-net"
   type = string
 }
 
-variable "subnet" {
+variable "subnet_name" {
   default = "tf-subnet"
   type = string
 }

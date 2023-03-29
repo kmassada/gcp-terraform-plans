@@ -2,8 +2,12 @@ variable "project_id" {
     description =  "Terraform Generated Project ID"    
 }
 
-variable "subnet" {
+variable "subnet_name" {
     description =  "Terraform Generated subnet"
+}
+
+variable "network_name" {
+    description =  "Terraform Generated network"
 }
 
 variable "instance_name" {

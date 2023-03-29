@@ -12,7 +12,8 @@ resource "google_compute_instance" "instance" {
     access_config {
       nat_ip = ""
     }
-    subnetwork = var.subnet
+    network = var.network_name
+    subnetwork = var.subnet_name
     subnetwork_project = var.project_id
   }
 

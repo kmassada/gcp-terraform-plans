@@ -1,7 +1,7 @@
 resource "google_compute_subnetwork" "subnet" {
-  name          = var.subnet
+  name          = var.subnet_name
   project       = var.project_id
-  network       = var.network.name
+  network       = var.network_name
   ip_cidr_range = var.subnet_ip_cidr_range
   description 	= "Subnet created by Terraform"
   secondary_ip_range =[

@@ -1,4 +1,4 @@
-variable "network" {
+variable "network_name" {
   default = "tf-net"
   type = string
 }
