@@ -123,8 +123,48 @@ module "gke_cluster_dpv2-pv-endpt" {
   service_account_email        = module.gke_node_sa.service_account_email
   dataplane_v2                 = "ADVANCED_DATAPATH"
   master_ipv4_cidr_block       = "172.16.0.16/28"
-  master_authorized_networks   = "0.0.0.0/0"
+  master_authorized_networks   = "10.0.0.0/8"
   enable_private_endpoint      = true
+  enable_private_nodes         = true
+  master_global_access_config  = true
+  create_custom_range          = false
+
+  depends_on = [
+    module.gke_node_sa,
+    module.gke_network
+  ]
+}
+
+module "gke_cluster_dpv2-pub-int-endpt" {
+  source                       = "./modules/gke-cluster"
+  cluster_name                 = "gke-cluster-dpv2-pub-int-endpt"
+  network_name                 = module.gke_network.network_name
+  location                     = "us-west3-b"
+  project_id                   = module.project.project_id
+  service_account_email        = module.gke_node_sa.service_account_email
+  dataplane_v2                 = "ADVANCED_DATAPATH"
+  master_ipv4_cidr_block       = "172.16.0.32/28"
+  enable_private_endpoint      = false
+  enable_private_nodes         = true
+  master_global_access_config  = true
+  create_custom_range          = false
+
+  depends_on = [
+    module.gke_node_sa,
+    module.gke_network
+  ]
+}
+
+module "gke_cluster_dpv2-pub-ext-endpt" {
+  source                       = "./modules/gke-cluster"
+  cluster_name                 = "gke-cluster-dpv2-pub-ext-endpt"
+  network_name                 = module.gke_network.network_name
+  location                     = "us-west3-c"
+  project_id                   = module.project.project_id
+  service_account_email        = module.gke_node_sa.service_account_email
+  dataplane_v2                 = "ADVANCED_DATAPATH"
+  master_ipv4_cidr_block       = ""
+  enable_private_endpoint      = false
   enable_private_nodes         = true
   master_global_access_config  = true
   create_custom_range          = false
