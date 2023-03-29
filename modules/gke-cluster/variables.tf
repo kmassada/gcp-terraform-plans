@@ -81,6 +81,6 @@ variable "networking_mode" {
 
 variable "master_authorized_networks" {
     description = "Master Authorized Networks"
-    default = []
+    default = ""
 }
 
