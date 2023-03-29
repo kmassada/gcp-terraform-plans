@@ -123,6 +123,7 @@ module "gke_cluster_dpv2-pv-endpt" {
   service_account_email        = module.gke_node_sa.service_account_email
   dataplane_v2                 = "ADVANCED_DATAPATH"
   master_ipv4_cidr_block       = "172.16.0.16/28"
+  master_authorized_networks   = ["0.0.0.0/0"]
   enable_private_endpoint      = true
   enable_private_nodes         = true
   master_global_access_config  = true

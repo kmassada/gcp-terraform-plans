@@ -78,3 +78,9 @@ variable "networking_mode" {
     description = "Mode of Networking: Options are VPC_NATIVE or ROUTES"
     default = "VPC_NATIVE"
 }
+
+variable "master_authorized_networks" {
+    description = "Master Authorized Networks"
+    default = []
+}
+

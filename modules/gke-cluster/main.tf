@@ -35,7 +35,12 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
     services_secondary_range_name = var.create_custom_range ? var.service_range_name : ""
   }
   
-
+  dynamic "master_authorized_networks_config" {
+    for_each = length(var.master_authorized_networks) > 0 ? [1] : []
+    content   {
+      cidr_blocks = var.master_authorized_networks
+    }
+  }
 
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint

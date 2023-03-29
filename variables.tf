@@ -34,3 +34,9 @@ variable "admin_sa" {
 variable "admin_sa_id" {
   description = "Admin ServiceAccount ID to manage other Terraform resources."
 }
+
+
+variable "authorized_networks" {
+  description = "Authorized networks CIDRs, used in firewall rules"
+  default = []
+}
