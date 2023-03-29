@@ -82,7 +82,7 @@ module "gke_cluster" {
   enable_private_endpoint      = false
   enable_private_nodes         = true
   master_global_access_config  = true
-  create_custom_range          = false
+  create_custom_range          = true
 
   depends_on = [
     module.gke_node_sa,

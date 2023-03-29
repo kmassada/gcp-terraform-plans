@@ -64,7 +64,7 @@ variable "release_channel" {
 
 variable "create_custom_range" {
     description = "Wether to provide own pod/service range"
-    default = false
+    default = true
 }
 
 variable "pod_range_name" {
