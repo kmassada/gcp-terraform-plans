@@ -6,7 +6,7 @@ resource "google_compute_network" "network" {
 }
 
 resource "google_compute_firewall" "net_allow_ssh" {
-  name    = "tf-net-allow-ssh"
+  name    = "${var.network_name}-allow-ssh"
   network = google_compute_network.network.name
   project = var.project_id
 
