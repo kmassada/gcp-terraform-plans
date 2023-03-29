@@ -38,7 +38,9 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
   dynamic "master_authorized_networks_config" {
     for_each = length(var.master_authorized_networks) > 0 ? [1] : []
     content   {
-      cidr_blocks = var.master_authorized_networks
+      cidr_blocks {
+        block = var.master_authorized_networks
+      }
     }
   }
 
