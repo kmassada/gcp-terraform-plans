@@ -18,4 +18,8 @@ resource "google_compute_firewall" "net_allow_ssh" {
   source_tags = ["allow-ssh"]
 
   source_ranges = var.network_allow_ssh_source_ranges
+
+  depends_on = [
+    google_compute_network.network
+  ]
 }
