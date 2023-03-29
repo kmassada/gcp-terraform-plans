@@ -103,7 +103,7 @@ module "gke_cluster_dpv2-pv-endpt" {
   pod_range_name               = module.network.pod_range_name
   service_range_name           = module.network.service_range_name
   dataplane_v2                 = "ADVANCED_DATAPATH"
-  master_ipv4_cidr_block       = "172.16.0.0/28"
+  master_ipv4_cidr_block       = "172.16.0.16/28"
   enable_private_endpoint      = true
   enable_private_nodes         = true
   master_global_access_config  = true
