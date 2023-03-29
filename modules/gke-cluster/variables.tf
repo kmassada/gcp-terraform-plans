@@ -4,6 +4,7 @@ variable "network_name" {
 
 variable "subnet_name" {
     description =  "Terraform Generated subnet"
+    default =  ""
 }
 
 variable "project_id" {
