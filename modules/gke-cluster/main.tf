@@ -31,9 +31,6 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
   subnetwork = var.create_custom_range ? var.subnet : ""
 
   ip_allocation_policy {
-    # A bogus map for a conditional block
-    for_each = var.create_custom_range ? [1] : []
-
       cluster_secondary_range_name = var.create_custom_range ? var.pod_range_name : ""
       services_secondary_range_name = var.create_custom_range ? var.service_range_name : ""
     }
