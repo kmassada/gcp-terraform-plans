@@ -66,10 +66,12 @@ variable "create_custom_range" {
 
 variable "pod_range_name" {
     description = "Name of IPv4 CIDR range of pod IPs"
+    default = ""
 }
 
 variable "service_range_name" {
     description = "Name of IPv4 CIDR range of services IPs"
+    default = ""
 }
 
 variable "networking_mode" {
