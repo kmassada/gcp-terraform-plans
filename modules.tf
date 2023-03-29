@@ -53,8 +53,8 @@ module "instance_sa" {
 
 module "instance" {
   source = "./modules/instance"
-  network = module.network.network_name_name
-  subnet = module.subnet.subnet_name
+  network_name = module.network.network_name_name
+  subnet_name = module.subnet.subnet_name
   project_id = module.project.project_id
   service_account_email = module.instance_sa.service_account_email
   depends_on = [
