@@ -1,6 +1,6 @@
 data "google_container_engine_versions" "fetch_version" {
   provider       = google-beta
-  location       = var.region
+  location       = var.location
   version_prefix = var.version_prefix
 }
 
@@ -27,8 +27,8 @@ resource "google_container_cluster" "primary" {
 
 min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version["${var.release_channel}"]
 
-  network = var.network
-  subnetwork = var.create_custom_range ? var.subnet : ""
+  network = var.network_name
+  subnetwork = var.create_custom_range ? var.subnet_name : ""
 
   ip_allocation_policy {
     cluster_secondary_range_name = var.create_custom_range ? var.pod_range_name : ""

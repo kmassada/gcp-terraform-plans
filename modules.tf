@@ -46,17 +46,20 @@ module "instance_sa" {
     "roles/container.developer"
   ]
   depends_on = [
-    module.network
+    module.network,
+    module.subnet
   ]
 }
 
 module "instance" {
   source = "./modules/instance"
-  subnet = module.network.subnet
+  network = module.network.network_name_name
+  subnet = module.subnet.subnet_name
   project_id = module.project.project_id
   service_account_email = module.instance_sa.service_account_email
   depends_on = [
     module.network,
+    module.subnet,
     module.instance_sa
   ]
 }
@@ -78,14 +81,13 @@ module "gke_node_sa" {
 module "gke_cluster" {
   source                       = "./modules/gke-cluster"
   cluster_name                 = "gke-cluster"
-  network                      = module.network.network
-  region                       = var.region
-  min_master_version           = var.min_master_version
-  subnet                       = module.network.subnet
+  network_name                 = module.network.network_name
+  location                     = var.region
+  subnet_name                  = module.subnet.subnet_name
   project_id                   = module.project.project_id
   service_account_email        = module.gke_node_sa.service_account_email
-  pod_range_name               = module.network.pod_range_name
-  service_range_name           = module.network.service_range_name
+  pod_range_name               = module.subnet.pod_range_name
+  service_range_name           = module.subnet.service_range_name
   dataplane_v2                 = "ADVANCED_DATAPATH"
   master_ipv4_cidr_block       = "172.16.0.0/28"
   enable_private_endpoint      = false
@@ -95,22 +97,30 @@ module "gke_cluster" {
 
   depends_on = [
     module.gke_node_sa,
-    module.network
+    module.network,
+    module.subnet
   ]
 }
 
+# Create many GKE Clusters
+
+module "gke_network" {
+  source = "./modules/network"
+  name = "tf-gke-net"
+  auto_create_subnetworks = true
+  project_id = module.project.project_id
+  depends_on = [
+    module.enable_api_services
+  ]
+}
 
 module "gke_cluster_dpv2-pv-endpt" {
   source                       = "./modules/gke-cluster"
   cluster_name                 = "gke-cluster-dpv2-pv-endpt"
-  network                      = module.network.network
-  region                       = "us-west3-a"
-  min_master_version           = var.min_master_version
-  subnet                       = module.network.subnet
+  network_name                 = module.gke_network.network_name
+  location                     = "us-west3-a"
   project_id                   = module.project.project_id
   service_account_email        = module.gke_node_sa.service_account_email
-  pod_range_name               = module.network.pod_range_name
-  service_range_name           = module.network.service_range_name
   dataplane_v2                 = "ADVANCED_DATAPATH"
   master_ipv4_cidr_block       = "172.16.0.16/28"
   enable_private_endpoint      = true
@@ -120,6 +130,6 @@ module "gke_cluster_dpv2-pv-endpt" {
 
   depends_on = [
     module.gke_node_sa,
-    module.network
+    module.gke_network
   ]
 }

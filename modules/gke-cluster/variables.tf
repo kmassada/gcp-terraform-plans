@@ -1,8 +1,8 @@
-variable "network" {
+variable "network_name" {
     description =  "Terraform Generated network"
 }
 
-variable "subnet" {
+variable "subnet_name" {
     description =  "Terraform Generated subnet"
 }
 
@@ -10,12 +10,8 @@ variable "project_id" {
     description =  "Terraform Generated Project ID"    
 }
 
-variable "region" {
+variable "location" {
     description =  "Terraform Set Region/Zone"    
-}
-
-variable "min_master_version" {
-    description =  "Terraform Set Min Master Version"    
 }
 
 variable "service_account_email" {
