@@ -8,8 +8,8 @@ export PROJECT_ID=`gcloud config get-value project`
 export PROJECT_NUMBER=`gcloud projects describe $PROJECT_ID --format="value(projectNumber)"`
 export FOLDER_ID=`gcloud projects get-ancestors $PROJECT_ID --format json | jq .[1].id | tr -d \"`
 
-echo $PROJECT_ID
-echo $PROJECT_NUMBER
+echo PROJECT_ID:$PROJECT_ID
+echo PROJECT_NUMBER:$PROJECT_NUMBER
 
 # My org name is a domain easy to filter on
 export DISPLAY_NAME=XXXXXXXXXXXXXX
@@ -20,8 +20,8 @@ export ORG_ID=`gcloud organizations list --filter='displayName~'"$DISPLAY_NAME"'
 # get the billing account you need
 export BILLING_ACCOUNT=`gcloud beta billing accounts list  --filter='displayName~'"$DISPLAY_NAME"'' --format json | jq .[0].name | tr -d \" | awk -F / '{print $2}'`
 
-echo $ORG_ID
-echo $BILLING_ACCOUNT
+echo ORG_ID: $ORG_ID
+echo BILLING_ACCOUNT: $BILLING_ACCOUNT
 
 # create a terraform folder inside the folder I control
 gcloud resource-manager folders create \
@@ -29,9 +29,10 @@ gcloud resource-manager folders create \
    --folder=$FOLDER_ID
 
 # from now on, will use that folder 
-echo $FOLDER_ID
+echo old FOLDER_ID:$FOLDER_ID
 export FOLDER_ID=`gcloud resource-manager folders list  --folder=$FOLDER_ID --filter='displayName~'"terraform-folder"'' --format json | jq .[0].name | tr -d \" | awk -F / '{print $2}'`
-echo $FOLDER_ID
+echo new FOLDER_ID:$FOLDER_ID
+
 
 # USE NEW FOLDER NUMBER, create project
 yes | gcloud projects create --name terraform-admin \
@@ -39,7 +40,7 @@ yes | gcloud projects create --name terraform-admin \
   --set-as-default
 
 export ADMIN_PROJECT=`gcloud projects list --filter="parent.id=$FOLDER_ID AND name=terraform-admin" --format json | jq .[0].projectId | tr -d \"`
-echo $ADMIN_PROJECT
+echo ADMIN_PROJECT: $ADMIN_PROJECT
 
 gcloud beta billing projects link $ADMIN_PROJECT \
   --billing-account $BILLING_ACCOUNT
@@ -59,10 +60,10 @@ INFO: creating a terraform admin account to manage some resources in the future
 
 ```shell
 # Create admin sa
-export admin_sa=terraform-admin-sa
+export ADMIN_SA=terraform-admin-sa
 gcloud iam service-accounts create $ADMIN_SA --display-name "Terraform admin account" \
 && sleep 5 && \
-export admin_sa_id=`gcloud iam service-accounts list --format='value(email)' --filter='displayName:Terraform admin account'`
+export ADMIN_SA_ID=`gcloud iam service-accounts list --format='value(email)' --filter='displayName:Terraform admin account'`
 
 gcloud projects add-iam-policy-binding $ADMIN_PROJECT --member=serviceAccount:$ADMIN_SA_ID --role=roles/viewer
 gcloud projects add-iam-policy-binding $ADMIN_PROJECT --member=serviceAccount:$ADMIN_SA_ID --role=roles/storage.admin
