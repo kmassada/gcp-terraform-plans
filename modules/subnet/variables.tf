@@ -1,3 +1,8 @@
+variable "project_id" {
+  description =  "Terraform Generated Project ID"
+  type = string
+}
+
 variable "network" {
   default = "tf-net"
   type = string
