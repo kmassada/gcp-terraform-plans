@@ -39,7 +39,7 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
     for_each = length(var.master_authorized_networks) > 0 ? [1] : []
     content   {
       cidr_blocks {
-        block = var.master_authorized_networks
+        cidr_block = var.master_authorized_networks
       }
     }
   }
