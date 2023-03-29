@@ -1,0 +1,11 @@
+formatter: "markdown table"
+output:
+  file: USAGE.md
+  mode: replace
+  template: |-
+        {{ .Content }}
+recursive:
+  enabled: true
+  path: modules
+settings:
+  hide-empty: true
