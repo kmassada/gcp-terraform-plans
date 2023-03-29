@@ -31,9 +31,9 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
   subnetwork = var.create_custom_range ? var.subnet : ""
 
   ip_allocation_policy {
-      cluster_secondary_range_name = var.create_custom_range ? var.pod_range_name : ""
-      services_secondary_range_name = var.create_custom_range ? var.service_range_name : ""
-    }
+    cluster_secondary_range_name = var.create_custom_range ? var.pod_range_name : ""
+    services_secondary_range_name = var.create_custom_range ? var.service_range_name : ""
+  }
   
 
 

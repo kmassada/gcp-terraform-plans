@@ -26,6 +26,15 @@ module "network" {
     module.enable_api_services
   ]
 }
+
+module "subnet" {
+  source = "./modules/subnet"
+  project_id = module.project.project_id
+  depends_on = [
+    module.network
+  ]
+}
+
 module "instance_sa" {
   source = "./modules/iam-roles"
   project_id = module.project.project_id
