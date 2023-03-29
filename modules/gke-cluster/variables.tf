@@ -6,10 +6,6 @@ variable "subnet" {
     description =  "Terraform Generated subnet"
 }
 
-variable "subnet_ip_cidr_range" {
-    description =  "Terraform Generated subnet's cidr range"
-}
-
 variable "project_id" {
     description =  "Terraform Generated Project ID"    
 }
@@ -64,6 +60,11 @@ variable "master_global_access_config" {
 variable "release_channel" {
     description = "Set the release channel of the cluster"
     default = "RAPID"
+}
+
+variable "create_custom_range" {
+    description = "Wether to provide own pod/service range"
+    default = false
 }
 
 variable "pod_range_name" {

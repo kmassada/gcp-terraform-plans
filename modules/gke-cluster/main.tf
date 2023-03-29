@@ -28,12 +28,18 @@ resource "google_container_cluster" "primary" {
 min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version["${var.release_channel}"]
 
   network = var.network
-  subnetwork = var.subnet
+  subnetwork = var.create_custom_range ? "" : var.subnet
 
-  ip_allocation_policy {
-    cluster_secondary_range_name = var.pod_range_name
-    services_secondary_range_name = var.service_range_name
+  dynamic ip_allocation_policy {
+    # A bogus map for a conditional block
+    for_each = var.create_custom_range ? [1] : []
+
+    content {
+      cluster_secondary_range_name = var.pod_range_name
+      services_secondary_range_name = var.service_range_name
+    }
   }
+
 
   private_cluster_config {
     enable_private_endpoint = var.enable_private_endpoint
