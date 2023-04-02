@@ -1,4 +1,4 @@
-resource "google_compute_network" "network" {
+resource "google_compute_network" "main" {
   name                    = var.network_name
   project                 = var.project_id
   auto_create_subnetworks = var.auto_create_subnetworks
@@ -7,7 +7,7 @@ resource "google_compute_network" "network" {
 
 resource "google_compute_firewall" "net_allow_ssh" {
   name    = "${var.network_name}-allow-ssh"
-  network = google_compute_network.network.name
+  network = google_compute_network.main.name
   project = var.project_id
 
   allow {
@@ -20,6 +20,6 @@ resource "google_compute_firewall" "net_allow_ssh" {
   source_ranges = var.network_allow_ssh_source_ranges
 
   depends_on = [
-    google_compute_network.network
+    google_compute_network.main
   ]
 }

@@ -4,7 +4,7 @@ data "google_container_engine_versions" "fetch_version" {
   version_prefix = var.version_prefix
 }
 
-resource "google_container_cluster" "primary" {
+resource "google_container_cluster" "main" {
   provider           = google-beta
   name               = var.cluster_name
   initial_node_count = 1

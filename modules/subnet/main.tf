@@ -1,4 +1,4 @@
-resource "google_compute_subnetwork" "subnet" {
+resource "google_compute_subnetwork" "main" {
   name          = var.subnet_name
   project       = var.project_id
   network       = var.network_name
