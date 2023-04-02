@@ -1,10 +1,14 @@
+## Requirements
 
+| Name | Version |
+|------|---------|
+| <a name="requirement_google"></a> [google](#requirement\_google) | 4.51.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_enable_api_services"></a> [enable\_api\_services](#module\_enable\_api\_services) | ./modules/project-services | n/a |
+| <a name="module_api_services"></a> [api\_services](#module\_api\_services) | ./modules/project-services | n/a |
 | <a name="module_gke_cluster"></a> [gke\_cluster](#module\_gke\_cluster) | ./modules/gke-cluster | n/a |
 | <a name="module_gke_cluster_dpv2-pub-ext-endpt"></a> [gke\_cluster\_dpv2-pub-ext-endpt](#module\_gke\_cluster\_dpv2-pub-ext-endpt) | ./modules/gke-cluster | n/a |
 | <a name="module_gke_cluster_dpv2-pub-int-endpt"></a> [gke\_cluster\_dpv2-pub-int-endpt](#module\_gke\_cluster\_dpv2-pub-int-endpt) | ./modules/gke-cluster | n/a |
@@ -31,13 +35,3 @@
 | <a name="input_org_id"></a> [org\_id](#input\_org\_id) | The ID of the Google Cloud Organization. | `any` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | n/a | `string` | `"us-west1"` | no |
 | <a name="input_region_zone"></a> [region\_zone](#input\_region\_zone) | n/a | `string` | `"us-west1-a"` | no |
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_cluster_location"></a> [cluster\_location](#output\_cluster\_location) | n/a |
-| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | n/a |
-| <a name="output_instance_name"></a> [instance\_name](#output\_instance\_name) | n/a |
-| <a name="output_instance_zone"></a> [instance\_zone](#output\_instance\_zone) | n/a |
-| <a name="output_project_id"></a> [project\_id](#output\_project\_id) | n/a |

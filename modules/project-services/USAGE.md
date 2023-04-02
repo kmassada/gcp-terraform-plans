@@ -10,7 +10,7 @@
 
 | Name | Type |
 |------|------|
-| [google_project_service.enable_api_services](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_service) | resource |
+| [google_project_service.api_services](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/project_service) | resource |
 
 ## Inputs
 
