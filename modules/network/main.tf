@@ -2,7 +2,7 @@ resource "google_compute_network" "main" {
   name                    = var.network_name
   project                 = var.project_id
   auto_create_subnetworks = var.auto_create_subnetworks
-  description 		        = "Network created by Terraform"
+  description             = "Network created by Terraform"
 }
 
 resource "google_compute_firewall" "net_allow_ssh" {

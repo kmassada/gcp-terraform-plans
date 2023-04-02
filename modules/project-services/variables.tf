@@ -17,5 +17,5 @@ variable "api_service_config" {
 }
 
 variable "project_id" {
-    description =  "Terraform Generated Project ID"    
+  description = "Terraform Generated Project ID"
 }

@@ -1,5 +1,5 @@
 variable "service_account_name" {
-    description = "Name of the service account being created"
+  description = "Name of the service account being created"
 }
 
 variable "service_account_roles" {
@@ -9,5 +9,5 @@ variable "service_account_roles" {
 }
 
 variable "project_id" {
-    description =  "Terraform Generated Project ID"    
+  description = "Terraform Generated Project ID"
 }

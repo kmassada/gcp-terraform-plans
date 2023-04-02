@@ -38,5 +38,5 @@ variable "admin_sa_id" {
 
 variable "authorized_networks" {
   description = "Authorized networks CIDRs, used in firewall rules"
-  default = ""
+  default     = ""
 }

@@ -1,22 +1,22 @@
 variable "project_id" {
-  description =  "Terraform Generated Project ID"
-  type = string
+  description = "Terraform Generated Project ID"
+  type        = string
 }
 
 variable "network_name" {
   default = "tf-net"
-  type = string
+  type    = string
 }
 
 variable "subnet_name" {
   default = "tf-subnet"
-  type = string
+  type    = string
 }
 
 variable "subnet_ip_cidr_range" {
   description = "CIDR range used for subnet"
-  default = "10.128.0.0/20"
-  type = string
+  default     = "10.128.0.0/20"
+  type        = string
 }
 
 variable "pod_range" {

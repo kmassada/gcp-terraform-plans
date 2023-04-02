@@ -1,16 +1,16 @@
 variable "network_name" {
   default = "tf-net"
-  type = string
+  type    = string
 }
 
 variable "auto_create_subnetworks" {
-  default = false
+  default     = false
   description = "Automatically create subnets or not"
 }
 
 variable "project_id" {
-  description =  "Terraform Generated Project ID"
-  type = string
+  description = "Terraform Generated Project ID"
+  type        = string
 }
 
 variable "network_allow_ssh_source_ranges" {

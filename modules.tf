@@ -1,14 +1,14 @@
 # Bootstrap Project and Bastion
 
 module "project" {
-  source = "./modules/project"
+  source          = "./modules/project"
   org_id          = var.org_id
   folder_id       = var.folder_id
   billing_account = var.billing_account
 }
 
 module "enable_api_services" {
-  source = "./modules/project-services"
+  source     = "./modules/project-services"
   project_id = module.project.project_id
   api_services = [
     "compute.googleapis.com",
@@ -20,7 +20,7 @@ module "enable_api_services" {
 }
 
 module "network" {
-  source = "./modules/network"
+  source     = "./modules/network"
   project_id = module.project.project_id
   depends_on = [
     module.enable_api_services
@@ -28,7 +28,7 @@ module "network" {
 }
 
 module "subnet" {
-  source = "./modules/subnet"
+  source     = "./modules/subnet"
   project_id = module.project.project_id
   depends_on = [
     module.network
@@ -36,8 +36,8 @@ module "subnet" {
 }
 
 module "instance_sa" {
-  source = "./modules/iam-roles"
-  project_id = module.project.project_id
+  source               = "./modules/iam-roles"
+  project_id           = module.project.project_id
   service_account_name = "bastion-node"
   service_account_roles = [
     "roles/monitoring.metricWriter",
@@ -52,10 +52,10 @@ module "instance_sa" {
 }
 
 module "instance" {
-  source = "./modules/instance"
-  network_name = module.network.network_name
-  subnet_name = module.subnet.subnet_name
-  project_id = module.project.project_id
+  source                = "./modules/instance"
+  network_name          = module.network.network_name
+  subnet_name           = module.subnet.subnet_name
+  project_id            = module.project.project_id
   service_account_email = module.instance_sa.service_account_email
   depends_on = [
     module.network,
@@ -67,8 +67,8 @@ module "instance" {
 # Create GKE cluster
 
 module "gke_node_sa" {
-  source = "./modules/iam-roles"
-  project_id = module.project.project_id
+  source               = "./modules/iam-roles"
+  project_id           = module.project.project_id
   service_account_name = "gke-node"
   service_account_roles = [
     "roles/container.nodeServiceAccount"
@@ -79,21 +79,21 @@ module "gke_node_sa" {
 }
 
 module "gke_cluster" {
-  source                       = "./modules/gke-cluster"
-  cluster_name                 = "gke-cluster"
-  network_name                 = module.network.network_name
-  location                     = var.region
-  subnet_name                  = module.subnet.subnet_name
-  project_id                   = module.project.project_id
-  service_account_email        = module.gke_node_sa.service_account_email
-  pod_range_name               = module.subnet.pod_range_name
-  service_range_name           = module.subnet.service_range_name
-  dataplane_v2                 = "ADVANCED_DATAPATH"
-  master_ipv4_cidr_block       = "172.16.0.0/28"
-  enable_private_endpoint      = false
-  enable_private_nodes         = true
-  master_global_access_config  = true
-  create_custom_range          = true
+  source                      = "./modules/gke-cluster"
+  cluster_name                = "gke-cluster"
+  network_name                = module.network.network_name
+  location                    = var.region
+  subnet_name                 = module.subnet.subnet_name
+  project_id                  = module.project.project_id
+  service_account_email       = module.gke_node_sa.service_account_email
+  pod_range_name              = module.subnet.pod_range_name
+  service_range_name          = module.subnet.service_range_name
+  dataplane_v2                = "ADVANCED_DATAPATH"
+  master_ipv4_cidr_block      = "172.16.0.0/28"
+  enable_private_endpoint     = false
+  enable_private_nodes        = true
+  master_global_access_config = true
+  create_custom_range         = true
 
   depends_on = [
     module.gke_node_sa,
@@ -105,29 +105,29 @@ module "gke_cluster" {
 # Create many GKE Clusters
 
 module "gke_network" {
-  source = "./modules/network"
-  network_name = "tf-gke-net"
+  source                  = "./modules/network"
+  network_name            = "tf-gke-net"
   auto_create_subnetworks = true
-  project_id = module.project.project_id
+  project_id              = module.project.project_id
   depends_on = [
     module.enable_api_services
   ]
 }
 
 module "gke_cluster_dpv2-pv-endpt" {
-  source                       = "./modules/gke-cluster"
-  cluster_name                 = "gke-cluster-dpv2-pv-endpt"
-  network_name                 = module.gke_network.network_name
-  location                     = "us-west3-a"
-  project_id                   = module.project.project_id
-  service_account_email        = module.gke_node_sa.service_account_email
-  dataplane_v2                 = "ADVANCED_DATAPATH"
-  master_ipv4_cidr_block       = "172.16.0.16/28"
-  master_authorized_networks   = "10.0.0.0/8"
-  enable_private_endpoint      = true
-  enable_private_nodes         = true
-  master_global_access_config  = true
-  create_custom_range          = false
+  source                      = "./modules/gke-cluster"
+  cluster_name                = "gke-cluster-dpv2-pv-endpt"
+  network_name                = module.gke_network.network_name
+  location                    = "us-west3-a"
+  project_id                  = module.project.project_id
+  service_account_email       = module.gke_node_sa.service_account_email
+  dataplane_v2                = "ADVANCED_DATAPATH"
+  master_ipv4_cidr_block      = "172.16.0.16/28"
+  master_authorized_networks  = "10.0.0.0/8"
+  enable_private_endpoint     = true
+  enable_private_nodes        = true
+  master_global_access_config = true
+  create_custom_range         = false
 
   depends_on = [
     module.gke_node_sa,
@@ -136,18 +136,18 @@ module "gke_cluster_dpv2-pv-endpt" {
 }
 
 module "gke_cluster_dpv2-pub-int-endpt" {
-  source                       = "./modules/gke-cluster"
-  cluster_name                 = "gke-cluster-dpv2-pub-int-endpt"
-  network_name                 = module.gke_network.network_name
-  location                     = "us-west3-b"
-  project_id                   = module.project.project_id
-  service_account_email        = module.gke_node_sa.service_account_email
-  dataplane_v2                 = "ADVANCED_DATAPATH"
-  master_ipv4_cidr_block       = "172.16.0.32/28"
-  enable_private_endpoint      = false
-  enable_private_nodes         = true
-  master_global_access_config  = true
-  create_custom_range          = false
+  source                      = "./modules/gke-cluster"
+  cluster_name                = "gke-cluster-dpv2-pub-int-endpt"
+  network_name                = module.gke_network.network_name
+  location                    = "us-west3-b"
+  project_id                  = module.project.project_id
+  service_account_email       = module.gke_node_sa.service_account_email
+  dataplane_v2                = "ADVANCED_DATAPATH"
+  master_ipv4_cidr_block      = "172.16.0.32/28"
+  enable_private_endpoint     = false
+  enable_private_nodes        = true
+  master_global_access_config = true
+  create_custom_range         = false
 
   depends_on = [
     module.gke_node_sa,
@@ -156,18 +156,18 @@ module "gke_cluster_dpv2-pub-int-endpt" {
 }
 
 module "gke_cluster_dpv2-pub-ext-endpt" {
-  source                       = "./modules/gke-cluster"
-  cluster_name                 = "gke-cluster-dpv2-pub-ext-endpt"
-  network_name                 = module.gke_network.network_name
-  location                     = "us-west3-c"
-  project_id                   = module.project.project_id
-  service_account_email        = module.gke_node_sa.service_account_email
-  dataplane_v2                 = "ADVANCED_DATAPATH"
-  master_ipv4_cidr_block       = ""
-  enable_private_endpoint      = false
-  enable_private_nodes         = true
-  master_global_access_config  = true
-  create_custom_range          = false
+  source                      = "./modules/gke-cluster"
+  cluster_name                = "gke-cluster-dpv2-pub-ext-endpt"
+  network_name                = module.gke_network.network_name
+  location                    = "us-west3-c"
+  project_id                  = module.project.project_id
+  service_account_email       = module.gke_node_sa.service_account_email
+  dataplane_v2                = "ADVANCED_DATAPATH"
+  master_ipv4_cidr_block      = ""
+  enable_private_endpoint     = false
+  enable_private_nodes        = true
+  master_global_access_config = true
+  create_custom_range         = false
 
   depends_on = [
     module.gke_node_sa,

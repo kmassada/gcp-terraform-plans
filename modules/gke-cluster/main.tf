@@ -18,26 +18,26 @@ resource "google_container_cluster" "main" {
     channel = var.release_channel
   }
 
-# TODO: will only work for RAPID/REGULAR
-#
-# "release_channel_latest_version": {
-#   "RAPID": "1.25.7-gke.1000",
-#   "REGULAR": "1.25.6-gke.1000"
-# },
+  # TODO: will only work for RAPID/REGULAR
+  #
+  # "release_channel_latest_version": {
+  #   "RAPID": "1.25.7-gke.1000",
+  #   "REGULAR": "1.25.6-gke.1000"
+  # },
 
-min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version["${var.release_channel}"]
+  min_master_version = data.google_container_engine_versions.fetch_version.release_channel_latest_version["${var.release_channel}"]
 
-  network = var.network_name
+  network    = var.network_name
   subnetwork = var.create_custom_range ? var.subnet_name : ""
 
   ip_allocation_policy {
-    cluster_secondary_range_name = var.create_custom_range ? var.pod_range_name : ""
+    cluster_secondary_range_name  = var.create_custom_range ? var.pod_range_name : ""
     services_secondary_range_name = var.create_custom_range ? var.service_range_name : ""
   }
-  
+
   dynamic "master_authorized_networks_config" {
     for_each = length(var.master_authorized_networks) > 0 ? [1] : []
-    content   {
+    content {
       cidr_blocks {
         cidr_block = var.master_authorized_networks
       }
@@ -49,7 +49,7 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
     enable_private_nodes    = var.enable_private_nodes
     master_ipv4_cidr_block  = var.master_ipv4_cidr_block
     master_global_access_config {
-      enabled =var.master_global_access_config
+      enabled = var.master_global_access_config
     }
   }
 
@@ -68,12 +68,12 @@ min_master_version = data.google_container_engine_versions.fetch_version.release
 
   logging_config {
     enable_components = [
-        "SYSTEM_COMPONENTS", 
-        "WORKLOADS", 
-        "APISERVER", 
-        "CONTROLLER_MANAGER", 
-        "SCHEDULER"
-      ]
+      "SYSTEM_COMPONENTS",
+      "WORKLOADS",
+      "APISERVER",
+      "CONTROLLER_MANAGER",
+      "SCHEDULER"
+    ]
   }
 
   timeouts {

@@ -5,14 +5,14 @@ resource "google_service_account" "main" {
 }
 
 resource "google_project_iam_binding" "service_account_roles" {
-  for_each  = toset(var.service_account_roles)
-  project   = var.project_id
-  role      = each.value
-  members   = ["serviceAccount:${google_service_account.main.email}"]  
+  for_each = toset(var.service_account_roles)
+  project  = var.project_id
+  role     = each.value
+  members  = ["serviceAccount:${google_service_account.main.email}"]
   lifecycle {
-    ignore_changes =[members]
+    ignore_changes = [members]
   }
-  depends_on   = [
+  depends_on = [
     google_service_account.main
   ]
 }
