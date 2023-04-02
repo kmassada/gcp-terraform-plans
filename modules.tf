@@ -7,7 +7,7 @@ module "project" {
   billing_account = var.billing_account
 }
 
-module "enable_api_services" {
+module "api_services" {
   source     = "./modules/project-services"
   project_id = module.project.project_id
   api_services = [
@@ -23,7 +23,7 @@ module "network" {
   source     = "./modules/network"
   project_id = module.project.project_id
   depends_on = [
-    module.enable_api_services
+    module.api_services
   ]
 }
 
@@ -74,7 +74,7 @@ module "gke_node_sa" {
     "roles/container.nodeServiceAccount"
   ]
   depends_on = [
-    module.enable_api_services
+    module.api_services
   ]
 }
 
@@ -110,7 +110,7 @@ module "gke_network" {
   auto_create_subnetworks = true
   project_id              = module.project.project_id
   depends_on = [
-    module.enable_api_services
+    module.api_services
   ]
 }
 
