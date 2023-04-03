@@ -30,8 +30,34 @@ module "api_services" {
     module.project
   ]
 }
+
+resource "google_storage_bucket" "admin" {
+  name          = "${module.project.project_id}"
+  location      = "US"
+  force_destroy = true
+  depends_on = [
+    module.project
+  ]
+}
+
+provisioner "local-exec" {
+    command = "mkdir -p ./output/"
+}
+
+resource "local_file" "backend_tf" {
+  filename = "./output/terraform_tfvars"
+  content = <<-EOT
+    terraform {
+        backend "gcs" {
+            bucket  = "${module.project.project_id}"
+            prefix  = "terraform/state"
+        }
+    }
+  EOT
+}
+
 resource "local_file" "terraform_tfvars" {
-  filename = "../terraform_tfvars"
+  filename = "./output/terraform_tfvars"
   content = <<-EOT
     org_ig = ${var.org_id}
     folder_id = ${module.folder.folder_name}
