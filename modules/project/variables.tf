@@ -12,10 +12,10 @@ variable "billing_account" {
 
 variable "project_name_prefix" {
   description = "The Prefix of the Project Name."
-  default = "TF Proj"
+  default     = "TF Proj"
 }
 
 variable "project_id_prefix" {
   description = "The Prefix of the Project ID."
-  default = "tf-btstrp-proj"
+  default     = "tf-btstrp-proj"
 }
