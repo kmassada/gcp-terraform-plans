@@ -26,8 +26,8 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_admin_project"></a> [admin\_project](#input\_admin\_project) | Admin Project to manage other Terraform resources. | `any` | n/a | yes |
-| <a name="input_admin_sa"></a> [admin\_sa](#input\_admin\_sa) | Admin ServiceAccount name to manage other Terraform resources. | `any` | n/a | yes |
-| <a name="input_admin_sa_id"></a> [admin\_sa\_id](#input\_admin\_sa\_id) | Admin ServiceAccount ID to manage other Terraform resources. | `any` | n/a | yes |
+| <a name="input_admin_sa"></a> [admin\_sa](#input\_admin\_sa) | Admin ServiceAccount name to manage other Terraform resources. | `string` | `""` | no |
+| <a name="input_admin_sa_id"></a> [admin\_sa\_id](#input\_admin\_sa\_id) | Admin ServiceAccount ID to manage other Terraform resources. | `string` | `""` | no |
 | <a name="input_authorized_networks"></a> [authorized\_networks](#input\_authorized\_networks) | Authorized networks CIDRs, used in firewall rules | `string` | `""` | no |
 | <a name="input_billing_account"></a> [billing\_account](#input\_billing\_account) | The ID of the associated billing account (optional). | `any` | n/a | yes |
 | <a name="input_folder_id"></a> [folder\_id](#input\_folder\_id) | The ID of the Google Cloud Folder. | `any` | n/a | yes |
