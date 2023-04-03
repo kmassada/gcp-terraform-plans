@@ -30,8 +30,8 @@ module "api_services" {
     module.project
   ]
 }
-resource "local_file" "terraform.tfvars" {
-  filename = "../terraform.tfvars"
+resource "local_file" "terraform_tfvars" {
+  filename = "../terraform_tfvars"
   content = <<-EOT
     org_ig = ${var.org_id}
     folder_id = ${module.folder.folder_name}
