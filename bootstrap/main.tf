@@ -36,6 +36,6 @@ resource "local_file" "terraform_tfvars" {
     org_ig = ${var.org_id}
     folder_id = ${module.folder.folder_name}
     billing_account = ${var.billing_account}
-    admin_project = ${var.module.project.project_id}
+    admin_project = ${module.project.project_id}
   EOT
 }
