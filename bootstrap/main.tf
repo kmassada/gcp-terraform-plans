@@ -21,8 +21,10 @@ module "api_services" {
   source     = "../modules/project-services"
   project_id = module.project.project_id
   api_services = [
-    "compute.googleapis.com",
-    "container.googleapis.com"
+    "cloudresourcemanager.googleapis.com",
+    "cloudbilling.googleapis.com",
+    "iam.googleapis.com",
+    "compute.googleapis.com"
   ]
   depends_on = [
     module.project
