@@ -29,12 +29,12 @@ variable "admin_project" {
 
 variable "admin_sa" {
   description = "Admin ServiceAccount name to manage other Terraform resources."
-  default=""
+  default     = ""
 }
 
 variable "admin_sa_id" {
   description = "Admin ServiceAccount ID to manage other Terraform resources."
-  default = ""
+  default     = ""
 }
 
 
