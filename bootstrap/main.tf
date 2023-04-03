@@ -18,7 +18,7 @@ module "project" {
 }
 
 module "api_services" {
-  source     = "./modules/project-services"
+  source     = "../modules/project-services"
   project_id = module.project.project_id
   api_services = [
     "compute.googleapis.com",
