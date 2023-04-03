@@ -46,7 +46,7 @@ resource "terraform_data" "outputs" {
 }
 
 resource "local_file" "backend_tf" {
-  filename = "./output/terraform_tfvars"
+  filename = "./output/backend_tf"
   content = <<-EOT
     terraform {
         backend "gcs" {
