@@ -2,7 +2,7 @@
 
 module "folder" {
   source      = "../modules/folder"
-  folder_name = "tf-folder"
+  folder_name = var.folder_name
   folder_id   = var.folder_id # parent
 }
 
