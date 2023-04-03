@@ -1,5 +1,6 @@
 variable "org_id" {
-  description = "The ID of the Google Cloud Organization."
+  description = "The ID of the Google Cloud Organization. (optional)"
+  default     = ""
 }
 
 variable "folder_id" {
@@ -8,6 +9,11 @@ variable "folder_id" {
 
 variable "billing_account" {
   description = "The ID of the associated billing account (optional)."
+}
+
+variable "enable_org_id" {
+  description = "Decide whethere to use org ID or folder ID as the parent"
+  default     = false
 }
 
 variable "project_name_prefix" {
