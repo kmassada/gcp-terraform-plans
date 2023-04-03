@@ -39,9 +39,10 @@ resource "google_storage_bucket" "admin" {
     module.project
   ]
 }
-
-provisioner "local-exec" {
-    command = "mkdir -p ./output/"
+resource "terraform_data" "outputs" {
+    provisioner "local-exec" {
+        command = "mkdir -p ./output/"
+    }
 }
 
 resource "local_file" "backend_tf" {
