@@ -3,9 +3,6 @@ resource "google_storage_bucket" "admin" {
   location      = "US"
   force_destroy = true
   project       = var.bucket_project
-  depends_on = [
-    module.project
-  ]
 }
 resource "terraform_data" "outputs" {
   provisioner "local-exec" {
