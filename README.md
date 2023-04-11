@@ -1,6 +1,35 @@
 # gcp-terraform-plans
 
-Export the following variables to your environment for use throughout the tutorial.
+Project to manage GCP resources
+
+## Step 0: Prepare Project
+
+we are going to run terraform scripts that need to bind resources together using the following APIs make sure they're enabled.
+
+```shell
+# enable services
+gcloud services enable cloudresourcemanager.googleapis.com && \
+gcloud services enable cloudbilling.googleapis.com && \
+gcloud services enable iam.googleapis.com && \
+gcloud services enable compute.googleapis.com
+```
+
+this has been built to run on cloud shell, some of the scripts expect to be able to run `mkdir`, or other `local_exec` commands
+
+## Step 1: Bootstrap
+
+We need to make a file we the following values and create the admin project/sa etc. We need the following variables in `terrafom.tfvars`. if you have this information skip ahead, to Step 2. 
+
+```shell
+cd ./bootstrap
+cat > terraform.tfvars <<EOF
+org_id="xxxxxxxxx"
+folder_id="xxxxxxxx"
+billing_account="xxxxxxxxx"
+EOF
+```
+
+### Bootstrap Helpers 
 
 ```shell
 # get project and folder info you need
@@ -22,96 +51,88 @@ export BILLING_ACCOUNT=`gcloud beta billing accounts list  --filter='displayName
 
 echo ORG_ID: $ORG_ID
 echo BILLING_ACCOUNT: $BILLING_ACCOUNT
-
-# create a terraform folder inside the folder I control
-gcloud resource-manager folders create \
-   --display-name="terraform-folder" \
-   --folder=$FOLDER_ID
-
-# from now on, will use that folder 
-echo old FOLDER_ID:$FOLDER_ID
-export FOLDER_ID=`gcloud resource-manager folders list  --folder=$FOLDER_ID --filter='displayName~'"terraform-folder"'' --format json | jq .[0].name | tr -d \" | awk -F / '{print $2}'`
-echo new FOLDER_ID:$FOLDER_ID
-
-
-# USE NEW FOLDER NUMBER, create project
-yes | gcloud projects create --name terraform-admin \
-  --folder $FOLDER_ID \
-  --set-as-default
-
-export ADMIN_PROJECT=`gcloud projects list --filter="parent.id=$FOLDER_ID AND name=terraform-admin" --format json | jq .[0].projectId | tr -d \"`
-echo ADMIN_PROJECT: $ADMIN_PROJECT
-
-gcloud beta billing projects link $ADMIN_PROJECT \
-  --billing-account $BILLING_ACCOUNT
-
-gcloud config set project $ADMIN_PROJECT
-
-# enable services
-gcloud services enable cloudresourcemanager.googleapis.com && \
-gcloud services enable cloudbilling.googleapis.com && \
-gcloud services enable iam.googleapis.com && \
-gcloud services enable compute.googleapis.com
 ```
 
-## optional [create sa]
-
-INFO: creating a terraform admin account to manage some resources in the future
+now, create `terraform.tfvars` for `bootstrap` terraform modules
 
 ```shell
-# Create admin sa
-export ADMIN_SA=terraform-admin-sa
-gcloud iam service-accounts create $ADMIN_SA --display-name "Terraform admin account" \
-&& sleep 5 && \
-export ADMIN_SA_ID=`gcloud iam service-accounts list --format='value(email)' --filter='displayName:Terraform admin account'`
-
-gcloud projects add-iam-policy-binding $ADMIN_PROJECT --member=serviceAccount:$ADMIN_SA_ID --role=roles/viewer
-gcloud projects add-iam-policy-binding $ADMIN_PROJECT --member=serviceAccount:$ADMIN_SA_ID --role=roles/storage.admin
-
-# For FOLDER NUMBER
-gcloud resource-manager folders add-iam-policy-binding $FOLDER_ID --member serviceAccount:$ADMIN_SA_ID --role roles/resourcemanager.projectCreator
+cd bootstrap
+cat > terraform.tfvars <<EOF
+org_id="$ORG_ID"
+folder_id="$FOLDER_ID"
+billing_account="$BILLING_ACCOUNT"
+EOF
 ```
 
-## External
+### Backend (Optional)
+
+I like to persist the backend state for admin-project as well
 
 ```shell
-gsutil mb -p $ADMIN_PROJECT gs://$ADMIN_PROJECT
+gsutil mb -p $PROJECT_ID gs://$PROJECT_ID-tf-admin
 
 cat > backend.tf <<EOF
 terraform {
  backend "gcs" {
-   bucket  = "$ADMIN_PROJECT"
+   bucket  = "$PROJECT_ID-tf-admin"
    prefix  = "terraform/state"
  }
 }
 EOF
 ```
 
-create main.tf with provider config
+## Step 2: Run Terraform for Bootstrap
 
-```shell
-cat > main.tf <<EOF
-provider "google" {
-  region  = "us-west1"
-  zone    = "us-west1-a"
-}
-EOF
+Run `terraform init`, then `terraform apply`
+
+it creates `backend_tf` and `terraform_tfvars` which can be used in other other runs.
+
+```
+$ tree .
+.
+├── backend.tf
+├── main.tf
+├── output
+│   ├── backend_tf
+│   └── terraform_tfvars
+├── terraform.tfvars
+└── variables.tf
+
+1 directory, 6 files
 ```
 
-## Run Terraform
+the `terraform_tfvars` has the following variables set
 
-set variables
+```
+org_ig = (org id inherited from bootstrap)
+folder_id = folders/(tf-folder where terraform projects will live)
+billing_account = (billing account inherited from bootstrap)
+admin_project = (admin project just created)
+```
+
+and the `backend_tf` also has the following
+
+```
+terraform {
+    backend "gcs" {
+        bucket  = "(admin project just created)"
+        prefix  = "terraform/state"
+    }
+}
+```
+
+### Step 3 Run modules 
+
 
 ```shell
-# IMPORTANT SET VARS NEEDED
+# IMPORTANT VARS NEEDED
+cd ../ # root of gcp-terraform-plans
 
 cat > terraform.tfvars <<EOF
 org_id="$ORG_ID"
 folder_id="$FOLDER_ID"
 billing_account="$BILLING_ACCOUNT"
 admin_project="$ADMIN_PROJECT"
-admin_sa="$ADMIN_SA"
-admin_sa_id="$ADMIN_SA_ID"
 EOF
 ```
 
