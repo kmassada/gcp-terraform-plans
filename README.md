@@ -58,7 +58,7 @@ gcloud services enable compute.googleapis.com
           "podrange"                = "10.8.0.0/14"
           "servicerange"            = "10.12.0.0/20"
           "location"                   = "us-west3"
-          "project_id" =  "lab project created by google_project.lab_project.id"
+          "project_id" =  "lab project created by google_project.tf_lab_project.id"
           "service_account_email" = "sa created by module.service-accounts["gke-node-sa"].service_account_email"
           "master_authorized_networks" = ""
           "master_ipv4_cidr_block"  = "172.16.0.0/28"
