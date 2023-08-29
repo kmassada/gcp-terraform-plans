@@ -21,8 +21,10 @@ variable "folder_id" {
 variable "api_services" {
   description = "Service APIs to enable."
   type        = list(string)
-  default = ["compute.googleapis.com",
-  "container.googleapis.com"]
+  default = [
+    "compute.googleapis.com",
+    "container.googleapis.com"
+  ]
 }
 
 

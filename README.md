@@ -17,7 +17,8 @@ gcloud services enable compute.googleapis.com
 
 ## Step 1: Create/specify the storage bucket for you terraform project
  Modify `backend.tf` by specifying your backet where you want to keep the terraform states
-  ```
+
+  ```conf
   terraform {
     backend "gcs" {
       bucket = "terraform-for-all"
@@ -36,8 +37,8 @@ gcloud services enable compute.googleapis.com
 -  creating more GKE clusters
    the minimal configuration you need to specify is the gke cluster name in "locals" section of  `variables.tf`:
    For example to create two clusters `gke-cluster-15` and `acunamatata` with the default configuration your `locals.gke_cluster_config ` section will look like below:
-    ```
-
+    
+    ```conf
     locals {
       gke_cluster_config = {
         gke-cluster-15 = {
@@ -46,11 +47,11 @@ gcloud services enable compute.googleapis.com
         }
       }
     }
-
    ```
 
    Please see below the available customization options for gke cluster along wiht the default values that applied if you don't specify them for you cluster
-  ```
+
+  ```conf
     locals {
       gke_cluster_config = {
         gke-cluster-15 = {
@@ -77,7 +78,7 @@ gcloud services enable compute.googleapis.com
   ```
 
 
-## Step 3 (optional) create teeraform workspace to reuse the same GCS bucket for several lab environemnts
+## Step 3 (optional) create Terraform workspace to reuse the same GCS bucket for several lab environemnts
 `terraform workspace new [NAME]`
 
 ## Step 4 Run Terraform  to create resources
