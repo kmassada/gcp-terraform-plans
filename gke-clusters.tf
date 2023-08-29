@@ -17,7 +17,6 @@ module "gke_cluster" {
   master_global_access_config = try(each.value.master_global_access_config, true)
   create_custom_range         = try(each.value.create_custom_range, false)
   master_authorized_networks  = try(each.value.master_authorized_networks, "")
-
 }
 
 
