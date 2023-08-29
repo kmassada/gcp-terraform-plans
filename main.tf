@@ -1,4 +1,4 @@
-resource "google_project" "lab_project" {
+resource "google_project" "tf_lab_project" {
   name       = terraform.workspace
   project_id = terraform.workspace
   folder_id  = var.folder_id
@@ -6,7 +6,7 @@ resource "google_project" "lab_project" {
 
 resource "google_project_service" "api_services" {
   for_each                   = toset(var.api_services)
-  project                    = google_project.lab_project.id
+  project                    = google_project.tf_lab_project.id
   service                    = each.value
   disable_on_destroy         = false
   disable_dependent_services = false
@@ -17,7 +17,7 @@ module "network" {
   network_name                    = each.key
   source                          = "./modules/network"
   depends_on                      = [google_project_service.api_services]
-  project_id                      = google_project.lab_project.id
+  project_id                      = google_project.tf_lab_project.id
   auto_create_subnetworks         = each.value.auto_create_subnetworks
   network_allow_ssh_source_ranges = ["0.0.0.0/0"]
   tf_subnet_config                = each.value.auto_create_subnetworks ? {} : var.tf_subnet_config
@@ -26,7 +26,7 @@ module "network" {
 module "service-accounts" {
   for_each              = var.service_accounts
   source                = "./modules/iam-roles"
-  project_id            = google_project.lab_project.id
+  project_id            = google_project.tf_lab_project.id
   service_account_name  = each.key
   service_account_roles = each.value
   depends_on = [
@@ -38,7 +38,7 @@ module "service-accounts" {
 resource "google_compute_instance" "bastion" {
   name         = "bastion-${terraform.workspace}"
   machine_type = "e2-micro"
-  project      = google_project.lab_project.id
+  project      = google_project.tf_lab_project.id
 
   service_account {
     email  = module.service-accounts["bastion"].service_account_email
@@ -51,7 +51,7 @@ resource "google_compute_instance" "bastion" {
     }
     network            = module.network["tf-net"].network_name
     subnetwork         = module.network["tf-net"].subnet_name["tf-subnet"]
-    subnetwork_project = google_project.lab_project.id
+    subnetwork_project = google_project.tf_lab_project.id
   }
 
   boot_disk {

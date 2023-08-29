@@ -6,7 +6,7 @@ module "gke_cluster" {
   network_name                = try(each.value.network_name, module.network["tf-gke-net"].network_name)
   location                    = try(each.value.location, var.region)
   subnet_name                 = try(each.value.subnet_name, "")
-  project_id                  = try(each.value.project_id, google_project.lab_project.id)
+  project_id                  = try(each.value.project_id, google_project.tf_lab_project.id)
   service_account_email       = try(each.value.service_account_email, module.service-accounts["gke-node-sa"].service_account_email)
   pod_range_name              = try(each.value.pod_range_name, "")
   service_range_name          = try(each.value.service_range_name, "")
