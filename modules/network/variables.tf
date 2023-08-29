@@ -1,10 +1,9 @@
 variable "network_name" {
-  default = "tf-net"
   type    = string
 }
 
 variable "auto_create_subnetworks" {
-  default     = false
+  default     = true
   description = "Automatically create subnets or not"
 }
 
@@ -16,3 +15,15 @@ variable "project_id" {
 variable "network_allow_ssh_source_ranges" {
   default = ["0.0.0.0/0"]
 }
+
+variable "tf_subnet_config" {
+  type = map(object({
+        name = string
+        primary_range = string
+        podrange = string
+        servicerange = string
+  }))
+  default = null
+}
+
+
